@@ -11,16 +11,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@eslint/js": "latest",
     "@vitejs/plugin-react": "latest",
-    "vite": "latest",
-    "typescript": "latest",
+    "eslint": "latest",
+    "eslint-plugin-react-hooks": "latest",
+    "eslint-plugin-react-refresh": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "eslint": "latest",
-    "@eslint/js": "latest",
+    "typescript": "latest",
     "typescript-eslint": "latest",
-    "eslint-plugin-react-hooks": "latest",
-    "eslint-plugin-react-refresh": "latest"
+    "vite": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0"
+  }
 }
