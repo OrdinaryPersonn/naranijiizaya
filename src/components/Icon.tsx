@@ -1,10 +1,11 @@
 import type { ReactNode, SVGProps } from 'react'
 
-export type IconName = 'sun' | 'arrow' | 'arrowUp' | 'menu' | 'close' | 'chevron' | 'check' | 'heart' | 'users' | 'book' | 'calendar' | 'clipboard' | 'person' | 'note' | 'shield' | 'external' | 'bag' | 'sparkle' | 'link' | 'print'
+export type IconName = 'sun' | 'moon' | 'arrow' | 'arrowUp' | 'menu' | 'close' | 'chevron' | 'check' | 'heart' | 'users' | 'book' | 'calendar' | 'clipboard' | 'person' | 'note' | 'shield' | 'external' | 'bag' | 'sparkle' | 'link' | 'print'
 
 export function Icon({ name, size = 22, strokeWidth = 1.8, ...props }: SVGProps<SVGSVGElement> & { name: IconName; size?: number; strokeWidth?: number }) {
   const common = { width: size, height: size, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const, 'aria-hidden': true, ...props }
   const paths: Record<IconName, ReactNode> = {
+    moon: <path d="M20.9 13.2A9 9 0 0 1 10.8 3.1a9 9 0 1 0 10.1 10.1Z"/>,
     sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></>,
     arrow: <><path d="M5 12h13"/><path d="m13 6 6 6-6 6"/></>,
     arrowUp: <><path d="M12 19V5"/><path d="m6 11 6-6 6 6"/></>,

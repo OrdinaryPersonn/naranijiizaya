@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { SITE_CONFIG } from './config/site'
-import { THEME } from './config/theme'
+import { ThemeToggle } from './components/ThemeToggle'
+import { ActivityGallery } from './components/ActivityGallery'
 import { ORGANIZATION_COPY } from './data/organizationCopy'
 import { PRODUCTS } from './data/merch'
 import { MEDICAL_REFERENCES } from './data/references'
@@ -15,8 +16,12 @@ const publishedProducts = PRODUCTS.filter((product) => product.status === 'publi
 const getInitialLocale = (): Locale => {
   const fromUrl = new URLSearchParams(window.location.search).get('lang') as Locale | null
   if (fromUrl && locales.includes(fromUrl)) return fromUrl
-  const stored = window.localStorage.getItem('preferred-locale') as Locale | null
-  return stored && locales.includes(stored) ? stored : 'mn'
+  try {
+    const stored = window.localStorage.getItem('preferred-locale') as Locale | null
+    return stored && locales.includes(stored) ? stored : 'mn'
+  } catch {
+    return 'mn'
+  }
 }
 
 function Button({ children, href, onClick, variant = 'primary', icon = 'arrow', className = '', type = 'button' }: { children: ReactNode; href?: string; onClick?: () => void; variant?: 'primary' | 'quiet' | 'outline'; icon?: IconName | null; className?: string; type?: 'button' | 'submit' }) {
@@ -43,6 +48,7 @@ function Header({ t, locale, setLocale, menuOpen, setMenuOpen }: { t: Translatio
         {navItems.map(([id, label]) => <button key={id} onClick={() => go(id)}>{label}</button>)}
       </nav>
       <div className="header-actions">
+        <ThemeToggle t={t}/>
         <label className="language-select"><span className="sr-only">Language</span><select value={locale} onChange={(e) => setLocale(e.target.value as Locale)} aria-label="Language"><option value="mn">MN</option><option value="en">EN</option><option value="zh">中文</option><option value="ru">RU</option></select><Icon name="chevron" size={13} /></label>
         <button className="menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? t.common.menuClose : t.common.menu} onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? 'close' : 'menu'} size={24} /></button>
       </div>
@@ -133,6 +139,7 @@ function AboutSection({ t, locale }: { t: Translation; locale: Locale }) {
       </div>
     </div>
     <div className="organization-activities"><h3>{content.activitiesLabel}</h3><ul>{content.activities.map((activity) => <li key={activity}><Icon name="check" size={18}/><span>{activity}</span></li>)}</ul></div>
+    <ActivityGallery t={t}/>
     <div className="cooperation-grid">{[content.regional, content.international].map((item) => <article key={item.title}><h3>{item.title}</h3><p>{item.body}</p></article>)}</div>
   </div></section>
 }
@@ -186,7 +193,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [donationOpen, setDonationOpen] = useState(false)
   const t = TRANSLATIONS[locale]
-  const setLocale = (next: Locale) => { setLocaleState(next); window.localStorage.setItem('preferred-locale', next); const url = new URL(window.location.href); url.searchParams.set('lang', next); window.history.replaceState({}, '', url); document.documentElement.lang = TRANSLATIONS[next].htmlLang; setMenuOpen(false) }
-  useEffect(() => { const root = document.documentElement; Object.entries(THEME.colors).forEach(([name, value]) => root.style.setProperty(`--${name.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`, value)); document.documentElement.lang = t.htmlLang; document.title = t.seo.title; const description = document.querySelector('meta[name="description"]'); description?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:title"]')?.setAttribute('content', t.seo.title); document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:locale"]')?.setAttribute('content', ({ mn: 'mn_MN', en: 'en_US', zh: 'zh_CN', ru: 'ru_RU' } as const)[locale]); let canonical = document.querySelector('link[rel="canonical"]'); if (!canonical) { canonical = document.createElement('link'); canonical.setAttribute('rel', 'canonical'); document.head.appendChild(canonical) } canonical.setAttribute('href', SITE_CONFIG.siteUrl || window.location.origin); locales.forEach((lang) => { let alternate = document.querySelector(`link[hreflang="${lang}"]`); if (!alternate) { alternate = document.createElement('link'); alternate.setAttribute('rel', 'alternate'); alternate.setAttribute('hreflang', lang); document.head.appendChild(alternate) } alternate.setAttribute('href', `${window.location.origin}/?lang=${lang}`) }); let fallback = document.querySelector('link[hreflang="x-default"]'); if (!fallback) { fallback = document.createElement('link'); fallback.setAttribute('rel', 'alternate'); fallback.setAttribute('hreflang', 'x-default'); document.head.appendChild(fallback) } fallback.setAttribute('href', `${window.location.origin}/?lang=mn`) }, [locale, t.htmlLang, t.seo.description, t.seo.title])
+  const setLocale = (next: Locale) => { setLocaleState(next); try { window.localStorage.setItem('preferred-locale', next) } catch { /* Language still works without storage. */ } const url = new URL(window.location.href); url.searchParams.set('lang', next); window.history.replaceState({}, '', url); document.documentElement.lang = TRANSLATIONS[next].htmlLang; setMenuOpen(false) }
+  useEffect(() => { document.documentElement.lang = t.htmlLang; document.title = t.seo.title; const description = document.querySelector('meta[name="description"]'); description?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:title"]')?.setAttribute('content', t.seo.title); document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:locale"]')?.setAttribute('content', ({ mn: 'mn_MN', en: 'en_US', zh: 'zh_CN', ru: 'ru_RU' } as const)[locale]); let canonical = document.querySelector('link[rel="canonical"]'); if (!canonical) { canonical = document.createElement('link'); canonical.setAttribute('rel', 'canonical'); document.head.appendChild(canonical) } canonical.setAttribute('href', SITE_CONFIG.siteUrl || window.location.origin); locales.forEach((lang) => { let alternate = document.querySelector(`link[hreflang="${lang}"]`); if (!alternate) { alternate = document.createElement('link'); alternate.setAttribute('rel', 'alternate'); alternate.setAttribute('hreflang', lang); document.head.appendChild(alternate) } alternate.setAttribute('href', `${window.location.origin}/?lang=${lang}`) }); let fallback = document.querySelector('link[hreflang="x-default"]'); if (!fallback) { fallback = document.createElement('link'); fallback.setAttribute('rel', 'alternate'); fallback.setAttribute('hreflang', 'x-default'); document.head.appendChild(fallback) } fallback.setAttribute('href', `${window.location.origin}/?lang=mn`) }, [locale, t.htmlLang, t.seo.description, t.seo.title])
   return <><Header t={t} locale={locale} setLocale={setLocale} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/><main id="main-content"><Hero t={t} locale={locale}/><DiagnosisSection t={t}/><GuideSection t={t}/><ProfileSection locale={locale}/><AboutSection t={t} locale={locale}/><JoinSection t={t} onDonate={() => setDonationOpen(true)}/><ShopSection t={t}/><ReferenceStrip t={t}/></main><Footer t={t}/>{donationOpen && <DonationModal t={t} onClose={() => setDonationOpen(false)}/>}<a className="back-to-top" href="#top" aria-label="Back to top"><Icon name="arrowUp" size={18}/></a></>
 }

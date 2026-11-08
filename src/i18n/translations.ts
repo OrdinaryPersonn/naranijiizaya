@@ -14,7 +14,7 @@ export const TRANSLATIONS: Record<Locale, Translation> = {
     shop: { eyebrow: 'Тэмдэглэж, дэмжинэ', title: 'Дэлгүүр', body: 'Брэндийн жижиг зүйлсийг ирээдүйд каталог хэлбэрээр танилцуулна. Одоогоор захиалга, үнэ, үлдэгдэл тохируулагдаагүй.', soon: 'Удахгүй', placeholder: 'Бүтээгдэхүүний зураг удахгүй', noPrice: 'Үнэ удахгүй' },
     modal: { title: 'Санхүүгийн дэмжлэг', close: 'Цонхыг хаах', qrAlt: 'Хандивын QR-ийн орлуулагч зураг', missing: 'Хандивын баталгаатай мэдээлэл удахгүй нэмэгдэнэ.', bank: 'Банк', accountName: 'Данс эзэмшигч', accountNumber: 'Дансны дугаар', instructions: 'Гүйлгээний тайлбар' },
     footer: { support: ORGANIZATION_COPY.mn.tagline, privacy: 'Нууцлал', disclaimer: 'Эрүүл мэндийн мэдээллийн тайлбар', rights: 'Бүх эрх хуулиар хамгаалагдсан.', references: 'Мэдээллийн эх сурвалж', sourceIntro: 'Мэдээлэл боловсруулахдаа олон улсын болон Монголын албан ёсны эх сурвалжийг түшиглэв.' },
-    common: { learnMore: 'Дэлгэрэнгүй', comingSoon: 'Удахгүй', menu: 'Цэс нээх', menuClose: 'Цэс хаах', sunMark: 'Нарны тэмдэг', externalLink: 'Шинэ цонхонд нээгдэнэ' },
+    common: { lightMode: "Гэрэлтэй горимд шилжих", darkMode: "Харанхуй горимд шилжих", activityPhotos: "Бидний үйл ажиллагааны зургууд", activityPhoto: "Наран Ижий Заяа байгууллагын үйл ажиллагааны зураг", morePhotos: "Бүх зургийг үзэх", fewerPhotos: "Цөөн зураг харуулах", viewPhoto: "Зургийг томоор үзэх", learnMore: 'Дэлгэрэнгүй', comingSoon: 'Удахгүй', menu: 'Цэс нээх', menuClose: 'Цэс хаах', sunMark: 'Нарны тэмдэг', externalLink: 'Шинэ цонхонд нээгдэнэ' },
     seo: { title: `${ORGANIZATION_COPY.mn.name} — ${ORGANIZATION_COPY.mn.initiative.title}`, description: ORGANIZATION_COPY.mn.shortDescription },
   },
   en: {
@@ -29,7 +29,7 @@ export const TRANSLATIONS: Record<Locale, Translation> = {
     shop: { eyebrow: 'Wear the support', title: 'Shop', body: 'A future catalog for small branded items. Orders, prices, and inventory are not configured in this placeholder version.', soon: 'Coming soon', placeholder: 'Product image coming soon', noPrice: 'Price coming soon' },
     modal: { title: 'Financial support', close: 'Close dialog', qrAlt: 'Donation QR placeholder', missing: 'Verified donation details will be added soon.', bank: 'Bank', accountName: 'Account name', accountNumber: 'Account number', instructions: 'Transfer note' },
     footer: { support: ORGANIZATION_COPY.en.tagline, privacy: 'Privacy', disclaimer: 'Health information notice', rights: 'All rights reserved.', references: 'Information sources', sourceIntro: 'This guide was shaped using reputable international and Mongolian official sources.' },
-    common: { learnMore: 'Learn more', comingSoon: 'Coming soon', menu: 'Open menu', menuClose: 'Close menu', sunMark: 'Sun mark', externalLink: 'Opens in a new tab' },
+    common: { lightMode: "Switch to light mode", darkMode: "Switch to dark mode", activityPhotos: "Our activities in photos", activityPhoto: "Naran Ijii Zaya community activity photo", morePhotos: "View all photos", fewerPhotos: "Show fewer photos", viewPhoto: "View full photo", learnMore: 'Learn more', comingSoon: 'Coming soon', menu: 'Open menu', menuClose: 'Close menu', sunMark: 'Sun mark', externalLink: 'Opens in a new tab' },
     seo: { title: `${ORGANIZATION_COPY.en.name} — ${ORGANIZATION_COPY.en.initiative.title}`, description: ORGANIZATION_COPY.en.shortDescription },
   },
   zh: {
@@ -44,7 +44,7 @@ export const TRANSLATIONS: Record<Locale, Translation> = {
     shop: { eyebrow: '表达支持', title: '小店', body: '未来会展示一些品牌小物。此占位版本尚未设置订单、价格和库存。', soon: '即将推出', placeholder: '产品图片即将加入', noPrice: '价格即将公布' },
     modal: { title: '财务支持', close: '关闭窗口', qrAlt: '捐赠二维码占位图', missing: '经过核实的捐赠信息即将加入。', bank: '银行', accountName: '账户名称', accountNumber: '账号', instructions: '转账备注' },
     footer: { support: ORGANIZATION_COPY.zh.tagline, privacy: '隐私', disclaimer: '健康信息说明', rights: '保留所有权利。', references: '信息来源', sourceIntro: '本指南参考了可靠的国际和蒙古国官方信息来源。' },
-    common: { learnMore: '了解更多', comingSoon: '即将推出', menu: '打开菜单', menuClose: '关闭菜单', sunMark: '太阳标记', externalLink: '将在新窗口打开' },
+    common: { lightMode: "切换到浅色模式", darkMode: "切换到深色模式", activityPhotos: "我们的活动照片", activityPhoto: "Naran Ijii Zaya 社区活动照片", morePhotos: "查看所有照片", fewerPhotos: "收起照片", viewPhoto: "查看完整照片", learnMore: '了解更多', comingSoon: '即将推出', menu: '打开菜单', menuClose: '关闭菜单', sunMark: '太阳标记', externalLink: '将在新窗口打开' },
     seo: { title: `${ORGANIZATION_COPY.zh.name} — ${ORGANIZATION_COPY.zh.initiative.title}`, description: ORGANIZATION_COPY.zh.shortDescription },
   },
   ru: {
@@ -59,7 +59,7 @@ export const TRANSLATIONS: Record<Locale, Translation> = {
     shop: { eyebrow: 'Носить поддержку', title: 'Магазин', body: 'Будущий каталог небольших брендированных товаров. В этой версии заказы, цены и наличие не настроены.', soon: 'Скоро', placeholder: 'Изображение товара появится позже', noPrice: 'Цена появится позже' },
     modal: { title: 'Финансовая поддержка', close: 'Закрыть окно', qrAlt: 'Заполнитель QR для пожертвований', missing: 'Проверенная информация о пожертвованиях появится позже.', bank: 'Банк', accountName: 'Владелец счёта', accountNumber: 'Номер счёта', instructions: 'Назначение перевода' },
     footer: { support: ORGANIZATION_COPY.ru.tagline, privacy: 'Конфиденциальность', disclaimer: 'Информация о здоровье', rights: 'Все права защищены.', references: 'Источники информации', sourceIntro: 'Путеводитель создан с опорой на надёжные международные и монгольские официальные источники.' },
-    common: { learnMore: 'Подробнее', comingSoon: 'Скоро', menu: 'Открыть меню', menuClose: 'Закрыть меню', sunMark: 'Знак солнца', externalLink: 'Откроется в новом окне' },
+    common: { lightMode: "Включить светлую тему", darkMode: "Включить тёмную тему", activityPhotos: "Фотографии наших мероприятий", activityPhoto: "Фотография мероприятия Наран Ижий Заяа", morePhotos: "Все фотографии", fewerPhotos: "Показать меньше", viewPhoto: "Посмотреть фото целиком", learnMore: 'Подробнее', comingSoon: 'Скоро', menu: 'Открыть меню', menuClose: 'Закрыть меню', sunMark: 'Знак солнца', externalLink: 'Откроется в новом окне' },
     seo: { title: `${ORGANIZATION_COPY.ru.name} — ${ORGANIZATION_COPY.ru.initiative.title}`, description: ORGANIZATION_COPY.ru.shortDescription },
   },
 }
