@@ -9,6 +9,7 @@ import { TRANSLATIONS } from './i18n/translations'
 import type { Locale, Translation } from './i18n/types'
 import { Icon, type IconName } from './components/Icon'
 import { SectionHeading } from './components/SectionHeading'
+import profilePhoto from '../naranijiizayapics/1000002829.jpg'
 import './styles.css'
 
 const locales: Locale[] = ['mn', 'en', 'zh', 'ru']
@@ -111,7 +112,10 @@ function GuideSection({ t }: { t: Translation }) {
 function ProfileSection({ locale }: { locale: Locale }) {
   const profile = ORGANIZATION_COPY[locale].profile
   return <section className="section stories-section" id="profile"><div className="shell">
-    <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role} light/>
+    <div className="profile-header">
+      <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role} light/>
+      <img className="profile-photo" src={profilePhoto} alt={profile.name} width={2048} height={1536} loading="lazy" decoding="async"/>
+    </div>
     <div className="profile-grid">
       <div className="profile-body">{profile.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
       <aside className="profile-aside">

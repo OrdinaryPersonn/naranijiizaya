@@ -20,7 +20,6 @@ import photo17 from '../../naranijiizayapics/1000002823.jpg'
 import photo18 from '../../naranijiizayapics/1000002825.jpg'
 import photo19 from '../../naranijiizayapics/1000002827.jpg'
 import photo20 from '../../naranijiizayapics/1000002828.jpg'
-import photo21 from '../../naranijiizayapics/1000002829.jpg'
 import photo22 from '../../naranijiizayapics/1000002830.jpg'
 
 export const ACTIVITY_PHOTOS = [
@@ -45,6 +44,5 @@ export const ACTIVITY_PHOTOS = [
   { id: '1000002825', src: photo18, width: 4000, height: 2250 },
   { id: '1000002827', src: photo19, width: 4000, height: 2252 },
   { id: '1000002828', src: photo20, width: 2252, height: 3102 },
-  { id: '1000002829', src: photo21, width: 2048, height: 1536 },
   { id: '1000002830', src: photo22, width: 2048, height: 1536 },
 ] as const
