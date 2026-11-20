@@ -9,6 +9,8 @@
   --white: #fff; --inverse: #25231f; --on-dark: #fff; --accent-ink: #25231f;
   --header: rgba(252,251,248,.94); --glass: rgba(255,255,255,.8);
   --card-tint: rgba(255,255,255,.44); --reference: #f0ede5; --focus: #8b5c00;
+  --card-border: #e3dccf;
+  --card-shadow: 0 3px 12px rgba(37,35,31,.025);
   --max: 1180px;
 }
 :root[data-theme="dark"] {
@@ -16,6 +18,8 @@
   --ink: #f4efe5; --ink-soft: #c4bdb1; --yellow-deep: #f0bd59;
   --cream: #2b261c; --canvas: #1c1b18; --surface: #22211e; --line: #464137;
   --white: #2c2a25; --inverse: #171613;
+  --card-border: #464137;
+  --card-shadow: 0 3px 12px rgba(0,0,0,.08);
   --header: rgba(28,27,24,.95); --glass: rgba(44,42,37,.9);
   --card-tint: #2c2a25; --reference: #26241f; --focus: #f5b83d;
 }
@@ -252,16 +256,23 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
 .eyebrow { font-size: 12px; letter-spacing: .12em; line-height: 1.6; }
 .journey-card p, .guide-panel p, .join-card p { font-size: 15px; }
 .button { font-size: 14px; }
-.journey-card, .product-card, .cooperation-grid article { box-shadow: 0 3px 12px rgba(37,35,31,.025); }
+/* Shared framing for standalone cards and panels; page sections stay open. */
+.journey-card, .checklist-card, .initiative-card, .join-card,
+.product-card, .profile-aside, .cooperation-grid article,
+.shop-intro, .shop-payment {
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+.join-card--donate { border-color: #464137; }
 .journey-number svg { box-sizing: content-box; padding: 10px; border-radius: 12px; background: var(--cream); }
 .product-card { background: var(--canvas); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
 .product-title-row strong { font-size: 16px; }
 .shop-grid { gap: 20px; }
 .shop-section .product-image span { top: auto; bottom: 12px; left: 12px; padding: 7px 12px; box-shadow: 0 3px 10px rgba(37,35,31,.1); }
 .profile-photo { box-shadow: 0 12px 36px rgba(37,35,31,.1); }
-.profile-aside { border-top: 3px solid var(--yellow); }
+
 .profile-aside blockquote { text-wrap: pretty; }
-.shop-intro { padding: 28px; background: var(--cream); border: 1px solid var(--line); border-radius: 18px; }
+.shop-intro { padding: 28px; background: var(--cream); border-radius: 18px; }
 .desktop-nav button { position: relative; }
 .desktop-nav button::after { content: ''; position: absolute; bottom: 1px; left: 0; width: 100%; height: 2px; border-radius: 2px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
 .desktop-nav button:hover::after, .desktop-nav button:focus-visible::after { transform: scaleX(1); }
@@ -271,3 +282,5 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
 }
 @media (max-width: 800px) { .motion-toggle { bottom: 0; }.hero-artwork { padding-bottom: 24px; }.shop-intro { padding: 22px; } }
 @media (max-width: 480px) { .sun-disc { box-shadow: 0 0 0 13px rgba(245,184,61,.1), 0 0 0 40px rgba(245,184,61,.055); }.shop-grid { gap: 18px; } }
+
+@media print { .checklist-card { border: 0; box-shadow: none; } }
