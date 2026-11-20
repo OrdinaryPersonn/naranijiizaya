@@ -10,7 +10,7 @@ export function getSavedTheme(): Theme | null {
 }
 
 export function getInitialTheme(): Theme {
-  return getSavedTheme() ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+  return getSavedTheme() ?? 'light'
 }
 
 export function applyTheme(theme: Theme) {

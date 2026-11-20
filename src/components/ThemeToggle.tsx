@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { applyTheme, getInitialTheme, getSavedTheme, saveTheme } from '../config/theme'
+import { applyTheme, getInitialTheme, saveTheme } from '../config/theme'
 import type { Translation } from '../i18n/types'
 import { Icon } from './Icon'
 
@@ -9,16 +9,12 @@ export function ThemeToggle({ t }: { t: Translation }) {
   useEffect(() => { applyTheme(theme) }, [theme])
 
   useEffect(() => {
-    const preference = window.matchMedia('(prefers-color-scheme: dark)')
     const syncTheme = () => setTheme(getInitialTheme())
-    const onSystemChange = () => { if (!getSavedTheme()) syncTheme() }
     const onStorage = (event: StorageEvent) => {
       if (event.key === 'preferred-theme' || event.key === null) syncTheme()
     }
-    preference.addEventListener('change', onSystemChange)
     window.addEventListener('storage', onStorage)
     return () => {
-      preference.removeEventListener('change', onSystemChange)
       window.removeEventListener('storage', onStorage)
     }
   }, [])
