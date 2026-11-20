@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('preferred-theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <meta name="theme-color" content="#f5b83d" />
     <meta name="description" content="Наран Ижий Заяа НҮТББ — хавдраас урьдчилан сэргийлэх, эрт илрүүлэлт, хавдрыг даван туулагчид болон тэдний гэр бүлд дэмжлэг үзүүлэх иргэний нийгмийн байгууллага." />
     <meta property="og:type" content="website" />

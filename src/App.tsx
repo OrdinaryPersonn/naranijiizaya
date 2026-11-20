@@ -3,17 +3,16 @@ import { SITE_CONFIG } from './config/site'
 import { ThemeToggle } from './components/ThemeToggle'
 import { ActivityGallery } from './components/ActivityGallery'
 import { ORGANIZATION_COPY } from './data/organizationCopy'
-import { PRODUCTS } from './data/merch'
+import { ShopSection } from './components/ShopSection'
 import { MEDICAL_REFERENCES } from './data/references'
 import { TRANSLATIONS } from './i18n/translations'
 import type { Locale, Translation } from './i18n/types'
 import { Icon, type IconName } from './components/Icon'
 import { SectionHeading } from './components/SectionHeading'
-import profilePhoto from '../naranijiizayapics/1000002829.jpg'
+import profilePhoto from '../naranijiizayapics/1000002794.jpg'
 import './styles.css'
 
 const locales: Locale[] = ['mn', 'en', 'zh', 'ru']
-const publishedProducts = PRODUCTS.filter((product) => product.status === 'published')
 const getInitialLocale = (): Locale => {
   const fromUrl = new URLSearchParams(window.location.search).get('lang') as Locale | null
   if (fromUrl && locales.includes(fromUrl)) return fromUrl
@@ -38,7 +37,7 @@ function BrandMark() {
 }
 
 function Header({ t, locale, setLocale, menuOpen, setMenuOpen }: { t: Translation; locale: Locale; setLocale: (locale: Locale) => void; menuOpen: boolean; setMenuOpen: (open: boolean) => void }) {
-  const navItems = [['diagnosis', t.nav.diagnosis], ['guide', t.nav.guide], ['profile', ORGANIZATION_COPY[locale].profile.name], ['about', t.nav.about], ['join', t.nav.join], ...(publishedProducts.length ? [['shop', t.nav.shop]] : [])]
+  const navItems = [['diagnosis', t.nav.diagnosis], ['guide', t.nav.guide], ['profile', ORGANIZATION_COPY[locale].profile.name], ['about', t.nav.about], ['join', t.nav.join], ['shop', t.nav.shop]]
   const go = (id: string) => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }
   return <header className="site-header">
     <div className="shell header-inner">
@@ -113,8 +112,8 @@ function ProfileSection({ locale }: { locale: Locale }) {
   const profile = ORGANIZATION_COPY[locale].profile
   return <section className="section stories-section" id="profile"><div className="shell">
     <div className="profile-header">
-      <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role} light/>
-      <img className="profile-photo" src={profilePhoto} alt={profile.name} width={2048} height={1536} loading="lazy" decoding="async"/>
+      <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role}/>
+      <img className="profile-photo" src={profilePhoto} alt={profile.name} width={1536} height={1536} loading="lazy" decoding="async"/>
     </div>
     <div className="profile-grid">
       <div className="profile-body">{profile.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
@@ -156,11 +155,6 @@ function JoinSection({ t, onDonate }: { t: Translation; onDonate: () => void }) 
   </div></div></section>
 }
 
-function ShopSection({ t }: { t: Translation }) {
-  if (!publishedProducts.length) return null
-  return <section className="section shop-section" id="shop"><div className="shell"><SectionHeading eyebrow={t.shop.eyebrow} title={t.shop.title} body={t.shop.body}/><div className="shop-grid">{publishedProducts.map((product) => <article className="product-card" key={product.id}><div className="product-image"><img src={product.images[0]} alt="" loading="lazy"/><span>{t.shop.soon}</span></div><div className="product-body"><div className="product-title-row"><h3>{product.name}</h3><Icon name="bag" size={18}/></div><p>{product.description}</p><div className="product-meta"><span>{t.shop.noPrice}</span><span className="product-status">{t.shop.soon}</span></div></div></article>)}</div></div></section>
-}
-
 function DonationModal({ t, onClose }: { t: Translation; onClose: () => void }) {
   const dialogRef = useRef<HTMLDivElement>(null); const closeRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
@@ -199,5 +193,5 @@ export default function App() {
   const t = TRANSLATIONS[locale]
   const setLocale = (next: Locale) => { setLocaleState(next); try { window.localStorage.setItem('preferred-locale', next) } catch { /* Language still works without storage. */ } const url = new URL(window.location.href); url.searchParams.set('lang', next); window.history.replaceState({}, '', url); document.documentElement.lang = TRANSLATIONS[next].htmlLang; setMenuOpen(false) }
   useEffect(() => { document.documentElement.lang = t.htmlLang; document.title = t.seo.title; const description = document.querySelector('meta[name="description"]'); description?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:title"]')?.setAttribute('content', t.seo.title); document.querySelector('meta[property="og:description"]')?.setAttribute('content', t.seo.description); document.querySelector('meta[property="og:locale"]')?.setAttribute('content', ({ mn: 'mn_MN', en: 'en_US', zh: 'zh_CN', ru: 'ru_RU' } as const)[locale]); let canonical = document.querySelector('link[rel="canonical"]'); if (!canonical) { canonical = document.createElement('link'); canonical.setAttribute('rel', 'canonical'); document.head.appendChild(canonical) } canonical.setAttribute('href', SITE_CONFIG.siteUrl || window.location.origin); locales.forEach((lang) => { let alternate = document.querySelector(`link[hreflang="${lang}"]`); if (!alternate) { alternate = document.createElement('link'); alternate.setAttribute('rel', 'alternate'); alternate.setAttribute('hreflang', lang); document.head.appendChild(alternate) } alternate.setAttribute('href', `${window.location.origin}/?lang=${lang}`) }); let fallback = document.querySelector('link[hreflang="x-default"]'); if (!fallback) { fallback = document.createElement('link'); fallback.setAttribute('rel', 'alternate'); fallback.setAttribute('hreflang', 'x-default'); document.head.appendChild(fallback) } fallback.setAttribute('href', `${window.location.origin}/?lang=mn`) }, [locale, t.htmlLang, t.seo.description, t.seo.title])
-  return <><Header t={t} locale={locale} setLocale={setLocale} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/><main id="main-content"><Hero t={t} locale={locale}/><DiagnosisSection t={t}/><GuideSection t={t}/><ProfileSection locale={locale}/><AboutSection t={t} locale={locale}/><JoinSection t={t} onDonate={() => setDonationOpen(true)}/><ShopSection t={t}/><ReferenceStrip t={t}/></main><Footer t={t}/>{donationOpen && <DonationModal t={t} onClose={() => setDonationOpen(false)}/>}<a className="back-to-top" href="#top" aria-label="Back to top"><Icon name="arrowUp" size={18}/></a></>
+  return <><Header t={t} locale={locale} setLocale={setLocale} menuOpen={menuOpen} setMenuOpen={setMenuOpen}/><main id="main-content"><Hero t={t} locale={locale}/><DiagnosisSection t={t}/><GuideSection t={t}/><ProfileSection locale={locale}/><AboutSection t={t} locale={locale}/><JoinSection t={t} onDonate={() => setDonationOpen(true)}/><ReferenceStrip t={t}/><ShopSection locale={locale}/></main><Footer t={t}/>{donationOpen && <DonationModal t={t} onClose={() => setDonationOpen(false)}/>}<a className="back-to-top" href="#top" aria-label="Back to top"><Icon name="arrowUp" size={18}/></a></>
 }

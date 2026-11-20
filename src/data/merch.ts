@@ -1,21 +1,11 @@
-export type Product = {
-  id: string
-  name: string
-  description: string
-  price: string
-  currency: string
-  images: string[]
-  variants: string[]
-  availability: 'coming-soon' | 'available'
-  featured: boolean
-  purchaseUrl: string
-  status: 'development-placeholder' | 'published'
-}
+const photos = import.meta.glob('../../shop/*.jpg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 
-/** DEVELOPMENT PLACEHOLDERS. Replace with approved products and prices before launch. */
-export const PRODUCTS: Product[] = [
-  { id: 'tee', name: 'Тэмдэгтэй футболк', description: 'Брэндийн энгийн, биед эвтэйхэн өдөр тутмын загвар.', price: '', currency: 'MNT', images: ['/images/merch-placeholder.svg'], variants: ['Размер TBD'], availability: 'coming-soon', featured: true, purchaseUrl: '', status: 'development-placeholder' },
-  { id: 'cap', name: 'Нарны малгай', description: 'Зөөлөн өнгө, энгийн тэмдэглэгээтэй загварын санаа.', price: '', currency: 'MNT', images: ['/images/merch-placeholder.svg'], variants: ['Размер TBD'], availability: 'coming-soon', featured: false, purchaseUrl: '', status: 'development-placeholder' },
-  { id: 'tote', name: 'Даавуун цүнх', description: 'Өдөр тутамд ашиглахад зориулсан дахин хэрэглэгдэх цүнхний санаа.', price: '', currency: 'MNT', images: ['/images/merch-placeholder.svg'], variants: [], availability: 'coming-soon', featured: false, purchaseUrl: '', status: 'development-placeholder' },
-  { id: 'pin', name: 'Нарны тэмдэг', description: 'Дэмжлэгээ илэрхийлэх жижиг аксессуарын санаа.', price: '', currency: 'MNT', images: ['/images/merch-placeholder.svg'], variants: [], availability: 'coming-soon', featured: false, purchaseUrl: '', status: 'development-placeholder' },
-]
+// Item numbers match the original photo filenames and payment references.
+export const PRODUCTS = Array.from({ length: 16 }, (_, index) => ({
+  id: String(index + 1).padStart(2, '0'),
+  image: photos[`../../shop/${index + 1}.jpg`],
+  price: 20000,
+}))
+
+export { default as qpayQr } from '../../shop/627c574e-3220-4957-9a25-d3985c69e6dd.jpeg'
+export { default as alipayQr } from '../../shop/ba94c3f8-02af-41d7-81f7-85f136e80e9c.jpeg'

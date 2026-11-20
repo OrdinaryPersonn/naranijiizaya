@@ -4,7 +4,7 @@ A multilingual, mobile-first one-page website for a Mongolian cancer-support non
 
 Organization content and Shagdar Ariunaa’s profile are adapted from `Naran_Ijii_Zayaa_NGO_Website_Profile.docx` and `Shagdar_Ariunaa_Website_Profile.docx` supplied in this folder. Mongolian is the original language; English, Simplified Chinese, and Russian translations are included. The initiative, eight activity areas, regional work, and international cooperation are represented without adding dates, impact statistics, named partners, or credentials absent from those documents.
 
-The documents contain no official logo, photos, contact details, volunteer form, donation information, or merchandise inventory. The site uses a text wordmark and content panels, hides the sample merchandise, and leaves missing contact/payment fields unconfigured. The pre-existing Facebook URL is retained; it is not verified by either document. Existing educational health content still requires the review described in `LAUNCH_CHECKLIST.md`.
+The documents contain no official logo, photos, contact details, volunteer form, donation information, or merchandise inventory. The site uses a text wordmark and supplied photos. The shop uses the 16 numbered photos in `shop/`, priced at ₮20,000 each, plus the supplied QPay and Alipay QR images. General donation fields remain unconfigured. The pre-existing Facebook URL is retained; it is not verified by either document. Existing educational health content still requires the review described in `LAUNCH_CHECKLIST.md`.
 
 ## Run locally
 
@@ -42,7 +42,7 @@ npm run preview
 2. Point `logoPath` to the official logo when provided. Until then, the header/footer display the organization name with the existing sun motif. Update the favicon in `public/brand/favicon.svg` if needed.
 3. Replace the donation image and fill all donation fields together. The UI hides bank details until bank name, account name, and account number are all configured.
 4. Ariunaa’s supplied website profile appears in its own section. A separate community story model remains in `src/data/stories.ts` for future consented stories; it is not currently rendered.
-5. Sample products in `src/data/merch.ts` are excluded from display. Populate real catalog data and finish the price, availability and purchase UI before enabling published products.
+5. Shop products in `src/data/merch.ts` map item numbers to `shop/1.jpg` through `shop/16.jpg`. Partnership copy is localized in `src/data/shopCopy.ts`. The shop generates a phone / item / quantity reference for customers to paste into their payment app. Phone numbers are not sent to a server or saved by the site. Payment verification, delivery and order confirmation are manual; no payment API or order database is connected.
 6. Update medical copy and `src/data/references.ts` only after qualified clinical and local-context review.
 
 ## Localization

@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (() => {
+        let theme;
+        try { theme = localStorage.getItem('preferred-theme'); } catch {}
+        if (theme !== 'light' && theme !== 'dark') theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
     <meta name="theme-color" content="#f5b83d" />
     <meta name="description" content="Наран Ижий Заяа НҮТББ — хавдраас урьдчилан сэргийлэх, эрт илрүүлэлт, хавдрыг даван туулагчид болон тэдний гэр бүлд дэмжлэг үзүүлэх иргэний нийгмийн байгууллага." />
     <meta property="og:type" content="website" />
@@ -11,8 +19,8 @@
     <meta property="og:description" content="Хүн төвтэй эрүүл мэнд • Дэмжлэг • Боломж • Хамтын шийдэл. Наран Ижий Заяа НҮТББ-ын үйл ажиллагаа, санаачилга болон Шагдар Ариунаагийн танилцуулга." />
     <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
     <title>Наран Ижий Заяа НҮТББ — БОЛОМЖ ҮРГЭЛЖ БАЙДАГ</title>
-    <script type="module" crossorigin src="/assets/index-Dob2FBbz.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-_lfZNjbU.css">
+    <script type="module" crossorigin src="/assets/index-DzGntYB4.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BUZWSk4Z.css">
   </head>
   <body>
     <a class="skip-link" href="#main-content">Үндсэн хэсэг рүү алгасах</a>
