@@ -61,6 +61,8 @@ function Header({ t, locale, setLocale, menuOpen, setMenuOpen }: { t: Translatio
 
 function Hero({ t, locale }: { t: Translation; locale: Locale }) {
   const content = ORGANIZATION_COPY[locale]
+  const [motionPaused, setMotionPaused] = useState(false)
+  const motionLabels = { mn: ['Хөдөлгөөнийг зогсоох', 'Хөдөлгөөнийг үргэлжлүүлэх'], en: ['Pause animation', 'Resume animation'], zh: ['暂停动画', '继续动画'], ru: ['Приостановить анимацию', 'Продолжить анимацию'] }[locale]
   return <section className="hero" id="top">
     <div className="hero-orbit hero-orbit--one" aria-hidden="true"/><div className="hero-orbit hero-orbit--two" aria-hidden="true"/>
     <div className="shell hero-grid">
@@ -71,11 +73,14 @@ function Hero({ t, locale }: { t: Translation; locale: Locale }) {
         <div className="hero-buttons"><Button href="#diagnosis" onClick={() => document.getElementById('diagnosis')?.scrollIntoView({ behavior: 'smooth' })}>{t.hero.primary}</Button><Button href="#join" variant="quiet" icon="arrow">{t.hero.secondary}</Button></div>
         <p className="hero-note"><Icon name="shield" size={16}/>{t.hero.note}</p>
       </div>
+      <div className="hero-artwork" data-motion={motionPaused ? 'paused' : 'playing'}>
       <div className="hero-visual" aria-label={t.common.sunMark} role="img">
         <div className="sun-disc"><Icon name="sun" size={96} strokeWidth={1.15}/></div>
         <div className="hero-card hero-card--top"><span className="hero-card-icon"><Icon name="heart" size={18}/></span><span><strong>01</strong><small>{t.diagnosis.stepLabel}</small></span></div>
         <div className="hero-card hero-card--bottom"><span className="hero-card-icon"><Icon name="users" size={18}/></span><span><strong>{content.name}</strong><small>{content.values[3]}</small></span></div>
         <div className="orbit orbit--large"/><div className="orbit orbit--small"/>
+      </div>
+      <button type="button" className="motion-toggle" onClick={() => setMotionPaused(!motionPaused)}>{motionLabels[motionPaused ? 1 : 0]}</button>
       </div>
     </div>
     <div className="hero-edge" aria-hidden="true"/>

@@ -222,3 +222,52 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
   .profile-body { grid-area: body; }
   .profile-aside { grid-area: aside; }
 }
+
+/* Warm lighting and restrained motion around the existing sun motif. */
+.hero { background: radial-gradient(ellipse at 78% 40%, rgba(245,184,61,.19), transparent 55%), var(--cream); }
+.hero-artwork { position: relative; min-width: 0; }
+.hero-visual { isolation: isolate; }
+.sun-disc { background: radial-gradient(circle at 32% 25%, #ffda7b, #f5b83d 58%, #e4a324); box-shadow: 0 0 0 20px rgba(245,184,61,.1), 0 0 0 65px rgba(245,184,61,.055), 0 24px 65px rgba(191,134,24,.15); }
+.orbit { pointer-events: none; }
+.orbit::after { content: ''; position: absolute; left: 50%; top: -5px; width: 9px; height: 9px; border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 5px rgba(245,184,61,.12); }
+.orbit--small::after { width: 6px; height: 6px; top: -3px; background: var(--yellow-deep); }
+.hero-card { z-index: 2; }
+.motion-toggle { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--glass); color: var(--ink-soft); font: inherit; font-size: 12px; white-space: nowrap; }
+.motion-toggle:hover { color: var(--ink); border-color: var(--yellow-deep); }
+@keyframes orbit-turn { from { transform: rotate(-20deg); } to { transform: rotate(340deg); } }
+@keyframes orbit-counterturn { from { transform: rotate(30deg); } to { transform: rotate(-330deg); } }
+@keyframes hero-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .orbit--large { animation: orbit-turn 48s linear infinite; }
+  .orbit--small { animation: orbit-counterturn 36s linear infinite; }
+  .hero-card { animation: hero-float 7s ease-in-out infinite; }
+  .hero-card--bottom { animation-delay: -3.5s; }
+  .hero-artwork[data-motion="paused"] .orbit, .hero-artwork[data-motion="paused"] .hero-card { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) { .motion-toggle { display: none; } }
+
+/* Consistent card surfaces, clearer small text, and gentle interactive feedback. */
+.section-heading h2, .hero h1 { text-wrap: balance; }
+.hero-body, .section-heading p { text-wrap: pretty; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; line-height: 1.6; }
+.journey-card p, .guide-panel p, .join-card p { font-size: 15px; }
+.button { font-size: 14px; }
+.journey-card, .product-card, .cooperation-grid article { box-shadow: 0 3px 12px rgba(37,35,31,.025); }
+.journey-number svg { box-sizing: content-box; padding: 10px; border-radius: 12px; background: var(--cream); }
+.product-card { background: var(--canvas); transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.product-title-row strong { font-size: 16px; }
+.shop-grid { gap: 20px; }
+.shop-section .product-image span { top: auto; bottom: 12px; left: 12px; padding: 7px 12px; box-shadow: 0 3px 10px rgba(37,35,31,.1); }
+.profile-photo { box-shadow: 0 12px 36px rgba(37,35,31,.1); }
+.profile-aside { border-top: 3px solid var(--yellow); }
+.profile-aside blockquote { text-wrap: pretty; }
+.shop-intro { padding: 28px; background: var(--cream); border: 1px solid var(--line); border-radius: 18px; }
+.desktop-nav button { position: relative; }
+.desktop-nav button::after { content: ''; position: absolute; bottom: 1px; left: 0; width: 100%; height: 2px; border-radius: 2px; background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+.desktop-nav button:hover::after, .desktop-nav button:focus-visible::after { transform: scaleX(1); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .product-card:hover { transform: translateY(-5px); border-color: var(--yellow-deep); box-shadow: 0 14px 28px rgba(37,35,31,.09); }
+  .button:active { transform: translateY(0); }
+}
+@media (max-width: 800px) { .motion-toggle { bottom: 0; }.hero-artwork { padding-bottom: 24px; }.shop-intro { padding: 22px; } }
+@media (max-width: 480px) { .sun-disc { box-shadow: 0 0 0 13px rgba(245,184,61,.1), 0 0 0 40px rgba(245,184,61,.055); }.shop-grid { gap: 18px; } }
