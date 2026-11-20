@@ -111,18 +111,20 @@ function GuideSection({ t }: { t: Translation }) {
 function ProfileSection({ locale }: { locale: Locale }) {
   const profile = ORGANIZATION_COPY[locale].profile
   return <section className="section stories-section" id="profile"><div className="shell">
-    <div className="profile-header">
-      <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role}/>
-      <img className="profile-photo" src={profilePhoto} alt={profile.name} width={1536} height={1536} loading="lazy" decoding="async"/>
-    </div>
-    <div className="profile-grid">
-      <div className="profile-body">{profile.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
-      <aside className="profile-aside">
+    <div className="profile-layout">
+      <div className="profile-main">
+        <SectionHeading eyebrow={profile.label} title={profile.name} body={profile.role}/>
+        <div className="profile-body">{profile.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
+      </div>
+      <div className="profile-sidebar">
+        <img className="profile-photo" src={profilePhoto} alt={profile.name} width={1536} height={1536} loading="lazy" decoding="async"/>
+        <aside className="profile-aside">
         <Icon name="heart" size={28}/>
         <blockquote>{profile.quote}</blockquote>
         <h3>{profile.goalLabel}</h3><p>{profile.goal}</p>
         <h3>{profile.futureLabel}</h3><p>{profile.future}</p>
-      </aside>
+        </aside>
+      </div>
     </div>
   </div></section>
 }
