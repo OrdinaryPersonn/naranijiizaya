@@ -42,7 +42,7 @@ npm run preview
 2. Point `logoPath` to the official logo when provided. Until then, the header/footer display the organization name with the existing sun motif. Update the favicon in `public/brand/favicon.svg` if needed.
 3. Replace the donation image and fill all donation fields together. The UI hides bank details until bank name, account name, and account number are all configured.
 4. Ariunaa’s supplied website profile appears in its own section. A separate community story model remains in `src/data/stories.ts` for future consented stories; it is not currently rendered.
-5. Shop products in `src/data/merch.ts` map item numbers to `shop/1.jpg` through `shop/16.jpg`. Partnership copy is localized in `src/data/shopCopy.ts`. The shop generates a phone / item / quantity reference for customers to paste into their payment app. Phone numbers are not sent to a server or saved by the site. Payment verification, delivery and order confirmation are manual; no payment API or order database is connected.
+5. Shop products in `src/data/merch.ts` map item numbers to `shop/1.jpg` through `shop/16.jpg`. Partnership copy is localized in `src/data/shopCopy.ts`. The shop displays numbered products and static QPay / Alipay instructions. Customers write their phone number, item number and quantity directly in their banking or payment app’s transaction description. There are no shop forms or item-selection controls, and the website does not collect phone numbers. Payment verification, delivery and order confirmation are manual; no payment API or order database is connected.
 6. Update medical copy and `src/data/references.ts` only after qualified clinical and local-context review.
 
 ## Localization
