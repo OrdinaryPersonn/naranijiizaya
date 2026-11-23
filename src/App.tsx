@@ -9,6 +9,7 @@ import { TRANSLATIONS } from './i18n/translations'
 import type { Locale, Translation } from './i18n/types'
 import { Icon, type IconName } from './components/Icon'
 import { SectionHeading } from './components/SectionHeading'
+import profilePhoto from '../naranijiizayapics/1000002794.jpg'
 import './styles.css'
 
 const locales: Locale[] = ['mn', 'en', 'zh', 'ru']
@@ -121,6 +122,7 @@ function ProfileSection({ locale }: { locale: Locale }) {
         <div className="profile-body">{profile.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
       </div>
       <div className="profile-sidebar">
+        <img className="profile-photo" src={profilePhoto} alt={profile.name} width={1536} height={1536} loading="lazy" decoding="async"/>
         <aside className="profile-aside">
         <Icon name="heart" size={28}/>
         <blockquote>{profile.quote}</blockquote>

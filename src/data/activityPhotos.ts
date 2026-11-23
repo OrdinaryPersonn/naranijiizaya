@@ -6,7 +6,6 @@ import photo3 from '../../naranijiizayapics/1000002822.jpg'
 import photo4 from '../../naranijiizayapics/1000002826.jpg'
 import photo5 from '../../naranijiizayapics/1000002831.jpg'
 import photo6 from '../../naranijiizayapics/1000002793.jpg'
-import photo7 from '../../naranijiizayapics/1000002794.jpg'
 import photo8 from '../../naranijiizayapics/1000002803.jpg'
 import photo9 from '../../naranijiizayapics/1000002805.jpg'
 import photo10 from '../../naranijiizayapics/1000002808.jpg'
@@ -30,7 +29,6 @@ export const ACTIVITY_PHOTOS = [
   { id: '1000002826', src: photo4, width: 2048, height: 1536 },
   { id: '1000002831', src: photo5, width: 2048, height: 1364 },
   { id: '1000002793', src: photo6, width: 4000, height: 3000 },
-  { id: '1000002794', src: photo7, width: 1536, height: 1536 },
   { id: '1000002803', src: photo8, width: 1080, height: 720 },
   { id: '1000002805', src: photo9, width: 1080, height: 810 },
   { id: '1000002808', src: photo10, width: 1280, height: 1706 },
