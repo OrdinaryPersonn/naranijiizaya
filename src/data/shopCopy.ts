@@ -1,8 +1,9 @@
 import type { Locale } from '../i18n/types'
 
-export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; productNames: Record<string, string>; variants: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
+export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; productNames: Record<string, string>; variants: string; previousVariant: string; nextVariant: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
   mn: {
-    productNames: { bundle: 'Багц', cup: 'Аяг', tote: 'Эко тор', pillbox: 'Эмийн хайрцаг' },
+    previousVariant: 'Өмнөх хувилбар', nextVariant: 'Дараагийн хувилбар',
+    productNames: { bundle: 'Багц', cup: 'Аяга', tote: 'Эко тор', pillbox: 'Эмийн хайрцаг' },
     variants: 'Хувилбарууд',
     qpayScan: 'Банкны аппынхаа QR уншигчаар уншуулна уу.',
     alipayScan: 'Alipay аппын “Scan” хэсгээр уншуулна уу.',
@@ -20,6 +21,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Утасны дугаар болон барааны дугаарыг төлбөрийн тайлбарт заавал оруулна уу. Бид төлбөрийг гараар шалгаж, захиалгыг баталгаажуулна. Хүргэлт, бэлэн байгаа эсэхийг Messenger-ээр тохиролцоно. Alipay-аар өөр валютаар төлөх бол дүнг урьдчилан тохиролцоно.', open: 'QR зургийг нээх / хадгалах',
   },
   en: {
+    previousVariant: 'Previous variant', nextVariant: 'Next variant',
     productNames: { bundle: 'Gift set', cup: 'Cup', tote: 'Eco tote', pillbox: 'Medicine box' },
     variants: 'Variants',
     qpayScan: 'Scan with your banking app’s QR scanner.',
@@ -38,6 +40,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Include your phone and item number in the payment note. We check payments manually before confirming orders. Contact us on Messenger for availability and delivery. Agree the converted amount with us before paying in another currency through Alipay.', open: 'Open / save QR image',
   },
   zh: {
+    previousVariant: '上一个款式', nextVariant: '下一个款式',
     productNames: { bundle: '套装', cup: '杯子', tote: '环保袋', pillbox: '药盒' },
     variants: '款式',
     qpayScan: '请使用银行应用的扫码功能扫描。',
@@ -55,6 +58,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: '付款备注必须包含电话号码和商品编号。我们会人工核实付款并确认订单。库存和配送请通过 Messenger 确认。支付宝使用其他货币付款前，请先确认换算金额。', open: '打开 / 保存二维码',
   },
   ru: {
+    previousVariant: 'Предыдущий вариант', nextVariant: 'Следующий вариант',
     productNames: { bundle: 'Набор', cup: 'Кружка', tote: 'Экосумка', pillbox: 'Таблетница' },
     variants: 'Варианты',
     qpayScan: 'Сканируйте QR в банковском приложении.',
