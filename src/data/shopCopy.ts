@@ -1,7 +1,8 @@
 import type { Locale } from '../i18n/types'
 
-export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
+export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; variants: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
   mn: {
+    variants: 'Хувилбарууд',
     qpayScan: 'Банкны аппынхаа QR уншигчаар уншуулна уу.',
     alipayScan: 'Alipay аппын “Scan” хэсгээр уншуулна уу.',
     title: 'Халамж шингэсэн бэлэг', body: 'Сайн үйлсийн төлөөх сонголт. Хамт олон, байгууллагаараа хайр халамж, талархал, сайн сайхныг түгээх өдөр тутмын хэрэгцээтэй, утга учиртай бэлэг.',
@@ -10,7 +11,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     bulk: 'Байгууллагын ой, тэмдэглэлт өдөр, ажилтнууддаа талархал илэрхийлэх болон хамт олны арга хэмжээнд зориулж өөрийн байгууллагын логотой, тоо хэмжээнд тохирсон багц захиалга авна.',
     contact: 'Messenger-ээр захиалгын мэдээлэл авах', item: 'Бараа',
     payment: "Төлбөр төлөх заавар",
-    instructions: "Энэ вэбсайтад мэдээлэл оруулах, бараа сонгох шаардлагагүй. Төлбөрөө хийхдээ банкны аппынхаа “Гүйлгээний утга” хэсэгт утасны дугаар болон барааны дугаараа заавал бичнэ үү.",
+    instructions: "Барааны хувилбаруудыг үзээд авах хувилбарынхаа дугаарыг тэмдэглэнэ үү. Төлбөрөө хийхдээ банкны аппынхаа “Гүйлгээний утга” хэсэгт утасны дугаар болон барааны дугаараа заавал бичнэ үү.",
     steps: ["Авах барааныхаа зураг дээрх дугаарыг харна уу. Нэг бараа ₮20,000.", "Банкны аппдаа QPay QR, эсвэл Alipay аппдаа Alipay QR-ийг уншуулж, авах тоо ширхэгтээ тохирох нийт дүнг оруулна уу.", "Төлбөрөө баталгаажуулахын өмнө гүйлгээний утгад утасны дугаар, барааны дугаар, тоо ширхэгээ бичнэ үү. Ингэснээр бид хэн төлсөн, ямар бараа захиалсныг мэднэ."],
     exampleLabel: "Банкны аппын “Гүйлгээний утга” хэсэгт бичих жишээ",
     example: "99112233 / #01 / 1ш",
@@ -18,6 +19,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Утасны дугаар болон барааны дугаарыг төлбөрийн тайлбарт заавал оруулна уу. Бид төлбөрийг гараар шалгаж, захиалгыг баталгаажуулна. Хүргэлт, бэлэн байгаа эсэхийг Messenger-ээр тохиролцоно. Alipay-аар өөр валютаар төлөх бол дүнг урьдчилан тохиролцоно.', open: 'QR зургийг нээх / хадгалах',
   },
   en: {
+    variants: 'Variants',
     qpayScan: 'Scan with your banking app’s QR scanner.',
     alipayScan: 'Open “Scan” in the Alipay app.',
     title: 'A gift filled with care', body: 'A meaningful choice for a good cause. Share care and gratitude with practical everyday gifts for your team or organization.',
@@ -26,7 +28,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     bulk: 'Group and corporate orders are welcome, with your own organization’s logo and quantities tailored to anniversaries, staff appreciation, team events and social responsibility initiatives.',
     contact: 'Order details on Messenger', item: 'Item',
     payment: "How to pay",
-    instructions: "You do not need to enter anything or select an item on this website. When paying, write your phone number and item number in your banking app’s payment description.",
+    instructions: "Browse the variants and note the item number you want. When paying, write your phone number and item number in your banking app’s payment description.",
     steps: ["Find the number on the item photo. Each item costs ₮20,000.", "Scan the QPay QR in your banking app, or the Alipay QR in Alipay, and enter the total for the quantity you want.", "Before confirming payment, write your phone number, item number and quantity in the payment description / note so we can identify who paid and what they ordered."],
     exampleLabel: "Example to write in your banking app’s payment description",
     example: "99112233 / #01 / x1",
@@ -34,6 +36,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Include your phone and item number in the payment note. We check payments manually before confirming orders. Contact us on Messenger for availability and delivery. Agree the converted amount with us before paying in another currency through Alipay.', open: 'Open / save QR image',
   },
   zh: {
+    variants: '款式',
     qpayScan: '请使用银行应用的扫码功能扫描。',
     alipayScan: '请打开支付宝的“扫一扫”。',
     title: '充满关爱的礼物', body: '为公益选择一份有意义的礼物。为团队和机构准备实用的日常礼品，传递关爱与感谢。',
@@ -41,7 +44,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     impact: '全部销售收入用于支持 Naran Ijii Zaya 非政府组织的活动。', bulk: '接受团体和企业批量订单，可按数量定制企业标志，适合周年庆、员工感谢及团队活动。',
     contact: '通过 Messenger 咨询订单', item: '商品',
     payment: "付款说明",
-    instructions: "无需在本网站输入任何信息或选择商品。付款时，请在银行应用的付款备注中填写您的电话号码和商品编号。",
+    instructions: "浏览各款式，并记下想购买的商品编号。付款时，请在银行应用的付款备注中填写您的电话号码和商品编号。",
     steps: ["查看商品图片上的编号。每件商品 ₮20,000。", "在银行应用中扫描 QPay 二维码，或在支付宝中扫描支付宝二维码，并输入所需数量对应的总金额。", "确认付款前，在付款备注中填写电话号码、商品编号和数量，方便我们确认付款人及所购商品。"],
     exampleLabel: "在银行应用付款备注中填写的示例",
     example: "99112233 / #01 / x1",
@@ -49,6 +52,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: '付款备注必须包含电话号码和商品编号。我们会人工核实付款并确认订单。库存和配送请通过 Messenger 确认。支付宝使用其他货币付款前，请先确认换算金额。', open: '打开 / 保存二维码',
   },
   ru: {
+    variants: 'Варианты',
     qpayScan: 'Сканируйте QR в банковском приложении.',
     alipayScan: 'Откройте «Scan» в приложении Alipay.',
     title: 'Подарок с заботой', body: 'Осмысленный выбор ради доброго дела. Полезные повседневные подарки для вашей команды или организации.',
@@ -56,7 +60,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     impact: 'Вся выручка от продаж направляется на деятельность НКО «Наран Ижий Заяа».', bulk: 'Принимаем групповые и корпоративные заказы с вашим логотипом и нужным количеством для юбилеев, благодарности сотрудникам и мероприятий.',
     contact: 'Подробности заказа в Messenger', item: 'Товар',
     payment: "Как оплатить",
-    instructions: "На этом сайте не нужно вводить данные или выбирать товар. При оплате укажите номер телефона и номер товара в назначении платежа в банковском приложении.",
+    instructions: "Просмотрите варианты и запомните номер нужного товара. При оплате укажите номер телефона и номер товара в назначении платежа в банковском приложении.",
     steps: ["Посмотрите номер на фотографии товара. Каждый товар стоит ₮20,000.", "Отсканируйте QR QPay в банковском приложении или QR Alipay в Alipay и введите общую сумму за нужное количество.", "Перед подтверждением платежа укажите телефон, номер товара и количество в назначении платежа, чтобы мы могли определить покупателя и состав заказа."],
     exampleLabel: "Пример назначения платежа в банковском приложении",
     example: "99112233 / #01 / x1",
