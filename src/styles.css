@@ -182,9 +182,11 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
 .profile-aside svg, .profile-aside h3 { color: var(--yellow-deep); }
 .join-card--donate .card-kicker { color: var(--yellow); }
 .footer-bottom { color: #bcb5aa; }
-.shop-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: -16px 0 36px; color: var(--ink-soft); line-height: 1.7; }
-.shop-intro ul { margin: 0 0 20px; padding-left: 22px; }
-.shop-impact { color: var(--ink); font-weight: 600; }
+.shop-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 40px; align-items: center; margin: -16px 0 36px; color: var(--ink-soft); line-height: 1.7; }
+.shop-intro-products { display: grid; gap: 8px; margin: 0; padding-left: 22px; }
+.shop-intro-products li { padding-left: 4px; }
+.shop-impact { grid-column: 1; margin: 0; color: var(--ink); font-weight: 600; }
+.shop-contact { grid-column: 2; grid-row: 1 / span 2; justify-self: end; text-align: center; }
 .shop-section .product-image { display: block; aspect-ratio: 1; background: #fff; }
 .shop-section .product-image img { object-fit: contain; }
 .shop-section .product-image span { color: #25231f; background: #f5b83d; font-size: 14px; }
@@ -205,7 +207,7 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
 .shop-qr-grid img { width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: #fff; }
 .shop-qr-grid a span { display: block; margin-top: 14px; text-decoration: underline; font-size: 14px; line-height: 1.5; }
 @media (max-width: 1050px) { .shop-payment { grid-template-columns: 1fr; }.shop-qr-grid { max-width: 650px; } }
-@media (max-width: 800px) { .shop-intro { grid-template-columns: 1fr; gap: 8px; }.shop-payment { padding: 22px; } }
+@media (max-width: 800px) { .shop-intro { grid-template-columns: 1fr; gap: 14px; }.shop-contact { grid-column: 1; grid-row: auto; justify-self: start; }.shop-payment { padding: 22px; } }
 @media (max-width: 480px) { .shop-qr-grid { grid-template-columns: 1fr; }.shop-qr-grid figure { max-width: 330px; }.shop-payment { padding: 18px; } }
 .shop-payment-steps { padding-left: 22px; color: var(--ink-soft); line-height: 1.7; }
 .shop-payment-steps li + li { margin-top: 14px; }
