@@ -1,22 +1,20 @@
 const photos = import.meta.glob('../../shop/*.jpg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 
-// Item numbers match the original photo filenames and payment references.
-export const PRODUCTS = Array.from({ length: 16 }, (_, index) => ({
-  id: String(index + 1).padStart(2, '0'),
-  image: photos[`../../shop/${index + 1}.jpg`],
-  price: 20000,
-}))
-
 // Keep each variant's original item number for payment references.
 export const PRODUCT_GROUPS = [
-  ['01', '02'],
-  ['03'],
-  ['04', '05'],
-  ['06', '07', '08', '09'],
-  ['10', '11', '12', '13', '14', '15', '16'],
-].map(ids => ({
-  id: ids[0],
-  variants: ids.map(id => PRODUCTS.find(product => product.id === id)!),
+  { ids: ['01', '02'], name: 'bundle', price: 88800 },
+  { ids: ['03'], name: 'cup', price: 58800 },
+  { ids: ['04', '05'], name: 'tote', price: 18800 },
+  { ids: ['06', '07', '08', '09'], name: 'tote', price: 28800 },
+  { ids: ['10', '11', '12', '13', '14', '15', '16'], name: 'pillbox', price: 18800 },
+].map(group => ({
+  id: group.ids[0],
+  name: group.name,
+  price: group.price,
+  variants: group.ids.map(id => ({
+    id,
+    image: photos[`../../shop/${Number(id)}.jpg`],
+  })),
 }))
 
 export { default as qpayQr } from '../../shop/627c574e-3220-4957-9a25-d3985c69e6dd.jpeg'

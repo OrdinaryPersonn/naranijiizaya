@@ -1,7 +1,8 @@
 import type { Locale } from '../i18n/types'
 
-export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; variants: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
+export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; productNames: Record<string, string>; variants: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
   mn: {
+    productNames: { bundle: 'Багц', cup: 'Аяг', tote: 'Эко тор', pillbox: 'Эмийн хайрцаг' },
     variants: 'Хувилбарууд',
     qpayScan: 'Банкны аппынхаа QR уншигчаар уншуулна уу.',
     alipayScan: 'Alipay аппын “Scan” хэсгээр уншуулна уу.',
@@ -12,13 +13,14 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     contact: 'Messenger-ээр захиалгын мэдээлэл авах', item: 'Бараа',
     payment: "Төлбөр төлөх заавар",
     instructions: "Барааны хувилбаруудыг үзээд авах хувилбарынхаа дугаарыг тэмдэглэнэ үү. Төлбөрөө хийхдээ банкны аппынхаа “Гүйлгээний утга” хэсэгт утасны дугаар болон барааны дугаараа заавал бичнэ үү.",
-    steps: ["Авах барааныхаа зураг дээрх дугаарыг харна уу. Нэг бараа ₮20,000.", "Банкны аппдаа QPay QR, эсвэл Alipay аппдаа Alipay QR-ийг уншуулж, авах тоо ширхэгтээ тохирох нийт дүнг оруулна уу.", "Төлбөрөө баталгаажуулахын өмнө гүйлгээний утгад утасны дугаар, барааны дугаар, тоо ширхэгээ бичнэ үү. Ингэснээр бид хэн төлсөн, ямар бараа захиалсныг мэднэ."],
+    steps: ["Авах барааныхаа дугаар болон үнийг харна уу. Үнэ нь барааны төрлөөс хамаарна.", "Банкны аппдаа QPay QR, эсвэл Alipay аппдаа Alipay QR-ийг уншуулж, авах тоо ширхэгтээ тохирох нийт дүнг оруулна уу.", "Төлбөрөө баталгаажуулахын өмнө гүйлгээний утгад утасны дугаар, барааны дугаар, тоо ширхэгээ бичнэ үү. Ингэснээр бид хэн төлсөн, ямар бараа захиалсныг мэднэ."],
     exampleLabel: "Банкны аппын “Гүйлгээний утга” хэсэгт бичих жишээ",
     example: "99112233 / #01 / 1ш",
     exampleHelp: "99112233-ыг өөрийн утасны дугаараар, #01-ийг авах барааныхаа дугаараар, 1ш-ийг авах тоо ширхэгээр солино уу.",
     note: 'Утасны дугаар болон барааны дугаарыг төлбөрийн тайлбарт заавал оруулна уу. Бид төлбөрийг гараар шалгаж, захиалгыг баталгаажуулна. Хүргэлт, бэлэн байгаа эсэхийг Messenger-ээр тохиролцоно. Alipay-аар өөр валютаар төлөх бол дүнг урьдчилан тохиролцоно.', open: 'QR зургийг нээх / хадгалах',
   },
   en: {
+    productNames: { bundle: 'Gift set', cup: 'Cup', tote: 'Eco tote', pillbox: 'Medicine box' },
     variants: 'Variants',
     qpayScan: 'Scan with your banking app’s QR scanner.',
     alipayScan: 'Open “Scan” in the Alipay app.',
@@ -29,13 +31,14 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     contact: 'Order details on Messenger', item: 'Item',
     payment: "How to pay",
     instructions: "Browse the variants and note the item number you want. When paying, write your phone number and item number in your banking app’s payment description.",
-    steps: ["Find the number on the item photo. Each item costs ₮20,000.", "Scan the QPay QR in your banking app, or the Alipay QR in Alipay, and enter the total for the quantity you want.", "Before confirming payment, write your phone number, item number and quantity in the payment description / note so we can identify who paid and what they ordered."],
+    steps: ["Check the selected item number and its displayed price. Prices vary by product.", "Scan the QPay QR in your banking app, or the Alipay QR in Alipay, and enter the total for the quantity you want.", "Before confirming payment, write your phone number, item number and quantity in the payment description / note so we can identify who paid and what they ordered."],
     exampleLabel: "Example to write in your banking app’s payment description",
     example: "99112233 / #01 / x1",
     exampleHelp: "Replace 99112233 with your phone number, #01 with the item number, and x1 with your quantity.",
     note: 'Include your phone and item number in the payment note. We check payments manually before confirming orders. Contact us on Messenger for availability and delivery. Agree the converted amount with us before paying in another currency through Alipay.', open: 'Open / save QR image',
   },
   zh: {
+    productNames: { bundle: '套装', cup: '杯子', tote: '环保袋', pillbox: '药盒' },
     variants: '款式',
     qpayScan: '请使用银行应用的扫码功能扫描。',
     alipayScan: '请打开支付宝的“扫一扫”。',
@@ -45,13 +48,14 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     contact: '通过 Messenger 咨询订单', item: '商品',
     payment: "付款说明",
     instructions: "浏览各款式，并记下想购买的商品编号。付款时，请在银行应用的付款备注中填写您的电话号码和商品编号。",
-    steps: ["查看商品图片上的编号。每件商品 ₮20,000。", "在银行应用中扫描 QPay 二维码，或在支付宝中扫描支付宝二维码，并输入所需数量对应的总金额。", "确认付款前，在付款备注中填写电话号码、商品编号和数量，方便我们确认付款人及所购商品。"],
+    steps: ["查看所选商品的编号及标示价格。不同商品的价格不同。", "在银行应用中扫描 QPay 二维码，或在支付宝中扫描支付宝二维码，并输入所需数量对应的总金额。", "确认付款前，在付款备注中填写电话号码、商品编号和数量，方便我们确认付款人及所购商品。"],
     exampleLabel: "在银行应用付款备注中填写的示例",
     example: "99112233 / #01 / x1",
     exampleHelp: "请将 99112233 替换为您的电话号码，#01 替换为商品编号，x1 替换为购买数量。",
     note: '付款备注必须包含电话号码和商品编号。我们会人工核实付款并确认订单。库存和配送请通过 Messenger 确认。支付宝使用其他货币付款前，请先确认换算金额。', open: '打开 / 保存二维码',
   },
   ru: {
+    productNames: { bundle: 'Набор', cup: 'Кружка', tote: 'Экосумка', pillbox: 'Таблетница' },
     variants: 'Варианты',
     qpayScan: 'Сканируйте QR в банковском приложении.',
     alipayScan: 'Откройте «Scan» в приложении Alipay.',
@@ -61,7 +65,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     contact: 'Подробности заказа в Messenger', item: 'Товар',
     payment: "Как оплатить",
     instructions: "Просмотрите варианты и запомните номер нужного товара. При оплате укажите номер телефона и номер товара в назначении платежа в банковском приложении.",
-    steps: ["Посмотрите номер на фотографии товара. Каждый товар стоит ₮20,000.", "Отсканируйте QR QPay в банковском приложении или QR Alipay в Alipay и введите общую сумму за нужное количество.", "Перед подтверждением платежа укажите телефон, номер товара и количество в назначении платежа, чтобы мы могли определить покупателя и состав заказа."],
+    steps: ["Проверьте номер выбранного товара и указанную цену. Цена зависит от товара.", "Отсканируйте QR QPay в банковском приложении или QR Alipay в Alipay и введите общую сумму за нужное количество.", "Перед подтверждением платежа укажите телефон, номер товара и количество в назначении платежа, чтобы мы могли определить покупателя и состав заказа."],
     exampleLabel: "Пример назначения платежа в банковском приложении",
     example: "99112233 / #01 / x1",
     exampleHelp: "Замените 99112233 своим телефоном, #01 — номером товара, а x1 — нужным количеством.",
