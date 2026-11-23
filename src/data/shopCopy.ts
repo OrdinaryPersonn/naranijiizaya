@@ -1,6 +1,6 @@
 import type { Locale } from '../i18n/types'
 
-export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; buy: string; productNames: Record<string, string>; variants: string; previousVariant: string; nextVariant: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
+export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; contact: string; item: string; buy: string; productNames: Record<string, string>; variants: string; previousVariant: string; nextVariant: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
   mn: {
     buy: 'Худалдаж авах',
     previousVariant: 'Өмнөх хувилбар', nextVariant: 'Дараагийн хувилбар',
@@ -11,7 +11,6 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     title: 'Халамж шингэсэн бэлэг', body: 'Сайн үйлсийн төлөөх сонголт. Хамт олон, байгууллагаараа хайр халамж, талархал, сайн сайхныг түгээх өдөр тутмын хэрэгцээтэй, утга учиртай бэлэг.',
     contents: ['Хэвлэлтэй, олон дахин ашиглах эко тор', 'Эм, өдөр тутмын витамин авч явах гоёмсог сав', '900 мл халуун, хүйтнээ баригч аяны аяга'],
     impact: 'Борлуулалтын бүх орлогыг “Наран ижий заяа” НҮТББ-ын үйл ажиллагаанд зориулна.',
-    bulk: 'Байгууллагын ой, тэмдэглэлт өдөр, ажилтнууддаа талархал илэрхийлэх болон хамт олны арга хэмжээнд зориулж өөрийн байгууллагын логотой, тоо хэмжээнд тохирсон багц захиалга авна.',
     contact: 'Messenger-ээр захиалгын мэдээлэл авах', item: 'Бараа',
     payment: "Төлбөр төлөх заавар",
     instructions: "Барааны хувилбаруудыг үзээд авах хувилбарынхаа дугаарыг тэмдэглэнэ үү. Төлбөрөө хийхдээ банкны аппынхаа “Гүйлгээний утга” хэсэгт утасны дугаар болон барааны дугаараа заавал бичнэ үү.",
@@ -31,7 +30,6 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     title: 'A gift filled with care', body: 'A meaningful choice for a good cause. Share care and gratitude with practical everyday gifts for your team or organization.',
     contents: ['Printed, reusable eco tote', 'Compact case for medicines and daily vitamins', '900 ml insulated travel cup for hot and cold drinks'],
     impact: 'All sales proceeds support the activities of Naran Ijii Zaya NGO.',
-    bulk: 'Group and corporate orders are welcome, with your own organization’s logo and quantities tailored to anniversaries, staff appreciation, team events and social responsibility initiatives.',
     contact: 'Order details on Messenger', item: 'Item',
     payment: "How to pay",
     instructions: "Browse the variants and note the item number you want. When paying, write your phone number and item number in your banking app’s payment description.",
@@ -50,8 +48,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     alipayScan: '请打开支付宝的“扫一扫”。',
     title: '充满关爱的礼物', body: '为公益选择一份有意义的礼物。为团队和机构准备实用的日常礼品，传递关爱与感谢。',
     contents: ['可重复使用的印花环保袋', '便携药品及维生素收纳盒', '900 毫升冷热保温旅行杯'],
-    impact: '全部销售收入用于支持 Naran Ijii Zaya 非政府组织的活动。', bulk: '接受团体和企业批量订单，可按数量定制企业标志，适合周年庆、员工感谢及团队活动。',
-    contact: '通过 Messenger 咨询订单', item: '商品',
+    impact: '全部销售收入用于支持 Naran Ijii Zaya 非政府组织的活动。',    contact: '通过 Messenger 咨询订单', item: '商品',
     payment: "付款说明",
     instructions: "浏览各款式，并记下想购买的商品编号。付款时，请在银行应用的付款备注中填写您的电话号码和商品编号。",
     steps: ["查看所选商品的编号及标示价格。不同商品的价格不同。", "在银行应用中扫描 QPay 二维码，或在支付宝中扫描支付宝二维码，并输入所需数量对应的总金额。", "确认付款前，在付款备注中填写电话号码、商品编号和数量，方便我们确认付款人及所购商品。"],
@@ -69,8 +66,7 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     alipayScan: 'Откройте «Scan» в приложении Alipay.',
     title: 'Подарок с заботой', body: 'Осмысленный выбор ради доброго дела. Полезные повседневные подарки для вашей команды или организации.',
     contents: ['Многоразовая экосумка с принтом', 'Компактный футляр для лекарств и витаминов', 'Термокружка 900 мл для горячих и холодных напитков'],
-    impact: 'Вся выручка от продаж направляется на деятельность НКО «Наран Ижий Заяа».', bulk: 'Принимаем групповые и корпоративные заказы с вашим логотипом и нужным количеством для юбилеев, благодарности сотрудникам и мероприятий.',
-    contact: 'Подробности заказа в Messenger', item: 'Товар',
+    impact: 'Вся выручка от продаж направляется на деятельность НКО «Наран Ижий Заяа».',    contact: 'Подробности заказа в Messenger', item: 'Товар',
     payment: "Как оплатить",
     instructions: "Просмотрите варианты и запомните номер нужного товара. При оплате укажите номер телефона и номер товара в назначении платежа в банковском приложении.",
     steps: ["Проверьте номер выбранного товара и указанную цену. Цена зависит от товара.", "Отсканируйте QR QPay в банковском приложении или QR Alipay в Alipay и введите общую сумму за нужное количество.", "Перед подтверждением платежа укажите телефон, номер товара и количество в назначении платежа, чтобы мы могли определить покупателя и состав заказа."],
