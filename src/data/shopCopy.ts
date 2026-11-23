@@ -1,7 +1,9 @@
 import type { Locale } from '../i18n/types'
 
-export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string }> = {
+export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: string[]; impact: string; bulk: string; contact: string; item: string; payment: string; instructions: string; steps: string[]; exampleLabel: string; example: string; exampleHelp: string; note: string; open: string; qpayScan: string; alipayScan: string }> = {
   mn: {
+    qpayScan: 'Банкны аппынхаа QR уншигчаар уншуулна уу.',
+    alipayScan: 'Alipay аппын “Scan” хэсгээр уншуулна уу.',
     title: 'Халамж шингэсэн бэлэг', body: 'Сайн үйлсийн төлөөх сонголт. Хамт олон, байгууллагаараа хайр халамж, талархал, сайн сайхныг түгээх өдөр тутмын хэрэгцээтэй, утга учиртай бэлэг.',
     contents: ['Хэвлэлтэй, олон дахин ашиглах эко тор', 'Эм, өдөр тутмын витамин авч явах гоёмсог сав', '900 мл халуун, хүйтнээ баригч аяны аяга'],
     impact: 'Борлуулалтын бүх орлогыг “Наран ижий заяа” НҮТББ-ын үйл ажиллагаанд зориулна.',
@@ -16,6 +18,8 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Утасны дугаар болон барааны дугаарыг төлбөрийн тайлбарт заавал оруулна уу. Бид төлбөрийг гараар шалгаж, захиалгыг баталгаажуулна. Хүргэлт, бэлэн байгаа эсэхийг Messenger-ээр тохиролцоно. Alipay-аар өөр валютаар төлөх бол дүнг урьдчилан тохиролцоно.', open: 'QR зургийг нээх / хадгалах',
   },
   en: {
+    qpayScan: 'Scan with your banking app’s QR scanner.',
+    alipayScan: 'Open “Scan” in the Alipay app.',
     title: 'A gift filled with care', body: 'A meaningful choice for a good cause. Share care and gratitude with practical everyday gifts for your team or organization.',
     contents: ['Printed, reusable eco tote', 'Compact case for medicines and daily vitamins', '900 ml insulated travel cup for hot and cold drinks'],
     impact: 'All sales proceeds support the activities of Naran Ijii Zaya NGO.',
@@ -30,6 +34,8 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: 'Include your phone and item number in the payment note. We check payments manually before confirming orders. Contact us on Messenger for availability and delivery. Agree the converted amount with us before paying in another currency through Alipay.', open: 'Open / save QR image',
   },
   zh: {
+    qpayScan: '请使用银行应用的扫码功能扫描。',
+    alipayScan: '请打开支付宝的“扫一扫”。',
     title: '充满关爱的礼物', body: '为公益选择一份有意义的礼物。为团队和机构准备实用的日常礼品，传递关爱与感谢。',
     contents: ['可重复使用的印花环保袋', '便携药品及维生素收纳盒', '900 毫升冷热保温旅行杯'],
     impact: '全部销售收入用于支持 Naran Ijii Zaya 非政府组织的活动。', bulk: '接受团体和企业批量订单，可按数量定制企业标志，适合周年庆、员工感谢及团队活动。',
@@ -43,6 +49,8 @@ export const SHOP_COPY: Record<Locale, { title: string; body: string; contents: 
     note: '付款备注必须包含电话号码和商品编号。我们会人工核实付款并确认订单。库存和配送请通过 Messenger 确认。支付宝使用其他货币付款前，请先确认换算金额。', open: '打开 / 保存二维码',
   },
   ru: {
+    qpayScan: 'Сканируйте QR в банковском приложении.',
+    alipayScan: 'Откройте «Scan» в приложении Alipay.',
     title: 'Подарок с заботой', body: 'Осмысленный выбор ради доброго дела. Полезные повседневные подарки для вашей команды или организации.',
     contents: ['Многоразовая экосумка с принтом', 'Компактный футляр для лекарств и витаминов', 'Термокружка 900 мл для горячих и холодных напитков'],
     impact: 'Вся выручка от продаж направляется на деятельность НКО «Наран Ижий Заяа».', bulk: 'Принимаем групповые и корпоративные заказы с вашим логотипом и нужным количеством для юбилеев, благодарности сотрудникам и мероприятий.',
