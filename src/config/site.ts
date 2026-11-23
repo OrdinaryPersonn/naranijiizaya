@@ -11,6 +11,7 @@ export const SITE_CONFIG = {
   address: '', // TODO_REPLACE_ADDRESS
   logoPath: '', // Add the official logo when supplied; otherwise display the organization name.
   volunteerFormUrl: '', // TODO_REPLACE_VOLUNTEER_FORM
+  shopOrderUrl: 'https://www.facebook.com/share/19T18kSfXQ/',
   donation: {
     qrImage: '', // TODO_REPLACE_DONATION_QR
     bankName: '', // TODO_REPLACE_BANK_INFORMATION

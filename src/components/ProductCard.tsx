@@ -3,6 +3,7 @@ import type { PRODUCT_GROUPS } from '../data/merch'
 import { SHOP_COPY } from '../data/shopCopy'
 import type { Locale } from '../i18n/types'
 import { Icon } from './Icon'
+import { SITE_CONFIG } from '../config/site'
 
 export function ProductCard({ group, locale }: { group: typeof PRODUCT_GROUPS[number]; locale: Locale }) {
   const [selectedId, setSelectedId] = useState(group.variants[0].id)
@@ -34,6 +35,7 @@ export function ProductCard({ group, locale }: { group: typeof PRODUCT_GROUPS[nu
       <button type="button" className="product-variant-arrow product-variant-arrow--next" aria-label={c.nextVariant} onClick={() => moveVariant(1)}><Icon name="chevron" size={18}/></button>
       <span className="sr-only" aria-live="polite" aria-atomic="true">{name} — {c.item} #{product.id}</span>
     </>}
+    <div className="product-controls">
     {group.variants.length > 1
       ? <div className="product-variant-list" ref={variantListRef} role="group" aria-label={`${name} — ${c.variants}`}>
           {group.variants.map(variant => <button
@@ -48,5 +50,7 @@ export function ProductCard({ group, locale }: { group: typeof PRODUCT_GROUPS[nu
           </button>)}
         </div>
       : <span className="product-number">#{product.id}</span>}
+      <a className="product-buy" href={SITE_CONFIG.shopOrderUrl} target="_blank" rel="noopener noreferrer" aria-label={`${c.buy}: ${name} #${product.id}`}>{c.buy}</a>
+    </div>
   </article>
 }

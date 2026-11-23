@@ -298,13 +298,17 @@ h1 { max-width: 670px; margin: 25px 0 24px; font-size: clamp(42px, 6vw, 76px); f
 .product-caption { position: absolute; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px; background: rgba(255,255,255,.96); color: #25231f; pointer-events: none; }
 .product-caption h3 { margin: 0; font-size: 18px; line-height: 1.3; }
 .product-caption strong { flex-shrink: 0; font-size: 16px; }
-.product-variant-list { position: absolute; inset: auto 12px 12px; display: flex; gap: 6px; overflow-x: auto; padding: 3px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #ac760b #fff; }
+.product-controls { position: absolute; inset: auto 12px 12px; display: flex; align-items: center; gap: 8px; }
+.product-variant-list { position: relative; flex: 1; min-width: 0; display: flex; gap: 6px; overflow-x: auto; padding: 3px; scroll-snap-type: x proximity; scrollbar-width: thin; scrollbar-color: #ac760b #fff; }
 .product-variant, .product-number { flex: 0 0 auto; display: grid; place-items: center; min-width: 44px; min-height: 44px; padding: 8px; border: 1px solid #d9d2c5; border-radius: 999px; background: #fff; color: #25231f; font-size: 14px; font-weight: 700; }
 .product-variant { scroll-snap-align: start; cursor: pointer; }
 .product-variant[aria-pressed="true"], .product-number { border-color: #f5b83d; background: #f5b83d; }
 .product-variant:hover { border-color: #ac760b; }
 .product-variant:focus-visible { outline: 2px solid #25231f; outline-offset: 2px; }
-.product-number { position: absolute; bottom: 15px; left: 15px; pointer-events: none; }
+.product-number { margin: 3px auto 3px 3px; pointer-events: none; }
+.product-buy { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 14px; border-radius: 999px; background: #f5b83d; color: #25231f; font-size: 14px; font-weight: 700; text-decoration: none; }
+.product-buy:hover { background: #f8c55d; }
+.product-buy:focus-visible { outline: 2px solid #25231f; outline-offset: 2px; }
 @media (max-width: 1050px) { .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .shop-grid { grid-template-columns: minmax(0, 1fr); } }
 
