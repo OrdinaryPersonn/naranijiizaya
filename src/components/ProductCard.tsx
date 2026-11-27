@@ -3,9 +3,8 @@ import type { PRODUCT_GROUPS } from '../data/merch'
 import { SHOP_COPY } from '../data/shopCopy'
 import type { Locale } from '../i18n/types'
 import { Icon } from './Icon'
-import { SITE_CONFIG } from '../config/site'
 
-export function ProductCard({ group, locale }: { group: typeof PRODUCT_GROUPS[number]; locale: Locale }) {
+export function ProductCard({ group, locale, orderUrl }: { group: typeof PRODUCT_GROUPS[number]; locale: Locale; orderUrl: string }) {
   const [selectedId, setSelectedId] = useState(group.variants[0].id)
   const variantListRef = useRef<HTMLDivElement>(null)
   const product = group.variants.find(variant => variant.id === selectedId) ?? group.variants[0]
@@ -50,7 +49,7 @@ export function ProductCard({ group, locale }: { group: typeof PRODUCT_GROUPS[nu
           </button>)}
         </div>
       : <span className="product-number">#{product.id}</span>}
-      <a className="product-buy" href={SITE_CONFIG.shopOrderUrl} target="_blank" rel="noopener noreferrer" aria-label={`${c.buy}: ${name} #${product.id}`}>{c.buy}</a>
+      {orderUrl && <a className="product-buy" href={orderUrl} target="_blank" rel="noopener noreferrer" aria-label={`${c.buy}: ${name} #${product.id}`}>{c.buy}</a>}
     </div>
   </article>
 }

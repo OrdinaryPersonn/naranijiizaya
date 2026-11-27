@@ -5,7 +5,7 @@
 export const SITE_CONFIG = {
   organizationName: 'Наран Ижий Заяа НҮТББ',
   shortName: 'Наран Ижий Заяа',
-  siteUrl: '', // TODO_REPLACE_PRODUCTION_DOMAIN
+  siteUrl: 'https://www.naranijiizaya.org',
   email: '', // TODO_REPLACE_EMAIL
   phone: '', // TODO_REPLACE_PHONE
   address: '', // TODO_REPLACE_ADDRESS

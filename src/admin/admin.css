@@ -1,0 +1,55 @@
+.admin-app { min-height: 100vh; background: #f4f7f6; color: #173d35; font-family: system-ui, sans-serif; font-size: 16px; line-height: 1.5; }
+body:has(.admin-app) { margin: 0; }
+html:has(.admin-app) { scroll-padding-bottom: 180px; }
+body:has(.admin-app) > .skip-link { position: absolute; top: -80px; left: 16px; z-index: 10; padding: 12px 20px; background: white; color: #176449; }
+body:has(.admin-app) > .skip-link:focus { top: 8px; }
+.admin-app * { box-sizing: border-box; }
+.admin-app a { color: #176449; text-underline-offset: 4px; }
+.admin-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 24px max(24px, calc((100vw - 1100px) / 2)); border-bottom: 1px solid #d5e1dc; background: white; }
+.admin-brand { font-weight: 750; text-decoration: none; font-size: 1.15rem; }
+.admin-brand span { display: block; font-size: .75rem; letter-spacing: .18em; color: #60766b; }
+.admin-header nav { display: flex; gap: 22px; align-items: center; font-size: .875rem; }
+.admin-app select { border: 1px solid #9bac9f; border-radius: 8px; background: white; padding: 8px; font: inherit; }
+.admin-main { max-width: 1100px; margin: auto; padding: 48px 24px 80px; }
+.admin-intro { max-width: 720px; margin-bottom: 36px; }
+.admin-eyebrow { font-size: .75rem; letter-spacing: .12em; font-weight: 700; color: #517162; }
+.admin-app h1 { font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.15; letter-spacing: -.035em; margin: 12px 0; }
+.admin-app h2 { font-size: 1.4rem; margin: 0 0 8px; }
+.admin-app h3 { margin: 0; font-size: 1rem; }
+.admin-intro > p:last-child, .admin-help { color: #4b665a; }
+.admin-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
+.admin-section { margin-bottom: 32px; background: white; padding: 28px; border: 1px solid #d5e1dc; border-radius: 18px; }
+.admin-help { margin: 0 0 24px; font-size: .9375rem; }
+.admin-product { display: grid; grid-template-columns: 80px minmax(120px, 1fr) 155px 160px; gap: 20px; align-items: center; padding: 22px 0; border-top: 1px solid #e3ebe6; }
+.admin-product img { width: 80px; height: 90px; object-fit: cover; border-radius: 10px; }
+.admin-product-info p { margin: 5px 0 0; font-size: .875rem; color: #536a60; }
+.admin-product--hidden img { opacity: .5; }
+.admin-app label { display: grid; gap: 8px; font-weight: 600; font-size: .875rem; }
+.admin-app input:not([type=checkbox]), .admin-app textarea { width: 100%; font: inherit; font-size: 1rem; font-weight: 400; color: #173d35; border: 1px solid #9bac9f; border-radius: 9px; padding: 12px; background: #fff; }
+.admin-app textarea { resize: vertical; }
+.admin-app :focus-visible { outline: 3px solid #d17c1f; outline-offset: 3px; }
+.admin-app .admin-visibility { display: flex; align-items: center; gap: 9px; }
+.admin-visibility input { width: 20px; height: 20px; accent-color: #176449; flex-shrink: 0; }
+.admin-contact { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.admin-wide { grid-column: 1 / -1; }
+.admin-savebar { position: sticky; bottom: 16px; background: #fff; border: 1px solid #c5d6cc; padding: 20px 24px; border-radius: 14px; box-shadow: 0 6px 28px #173d3514; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.admin-savebar p { margin: 0; font-weight: 600; }
+.admin-savebar small { display: block; font-size: .875rem; margin-top: 4px; color: #536a60; }
+.admin-app button { font: inherit; font-weight: 650; border: 0; background: #176449; color: white; border-radius: 9px; padding: 13px 24px; cursor: pointer; }
+.admin-app button:disabled { background: #e0e8e3; color: #526259; cursor: default; }
+.admin-success { color: #176449; }
+.admin-notice { padding: 20px; margin-top: 22px; border: 1px solid #d79a81; border-radius: 12px; background: #fff1e9; color: #763a25; overflow-wrap: anywhere; }
+.admin-notice p { margin: 0 0 12px; }
+.admin-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 760px) {
+  .admin-header { flex-direction: column; align-items: flex-start; padding: 20px; }
+  .admin-header nav { flex-wrap: wrap; gap: 16px; }
+  .admin-main { padding: 30px 16px 60px; }
+  .admin-section { padding: 20px; }
+  .admin-product { grid-template-columns: 70px 1fr; gap: 16px; }
+  .admin-product img { width: 70px; height: 80px; }
+  .admin-price { grid-column: 1 / -1; }
+  .admin-visibility { grid-column: 1 / -1; }
+  .admin-contact { grid-template-columns: 1fr; }
+  .admin-savebar { flex-direction: column; align-items: stretch; bottom: 8px; padding: 16px; gap: 12px; }
+}

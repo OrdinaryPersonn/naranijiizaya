@@ -4,7 +4,7 @@ A multilingual, mobile-first one-page website for a Mongolian cancer-support non
 
 Organization content and Shagdar Ariunaa’s profile are adapted from `Naran_Ijii_Zayaa_NGO_Website_Profile.docx` and `Shagdar_Ariunaa_Website_Profile.docx` supplied in this folder. Mongolian is the original language; English, Simplified Chinese, and Russian translations are included. The initiative, eight activity areas, regional work, and international cooperation are represented without adding dates, impact statistics, named partners, or credentials absent from those documents.
 
-The documents contain no official logo, photos, contact details, volunteer form, donation information, or merchandise inventory. The site uses a text wordmark and supplied photos. The shop uses the 16 numbered photos in `shop/`, priced at ₮20,000 each, plus the supplied QPay and Alipay QR images. General donation fields remain unconfigured. The pre-existing Facebook URL is retained; it is not verified by either document. Existing educational health content still requires the review described in `LAUNCH_CHECKLIST.md`.
+The documents contain no official logo, photos, contact details, volunteer form, donation information, or merchandise inventory. The site uses a text wordmark and supplied photos. The shop uses the 16 numbered photos in `shop/`, grouped by product with editable prices, plus the supplied QPay and Alipay QR images. Initial prices are defined in `src/data/editableContent.ts`; after setup, D1 holds the saved prices, visibility and contact details. General donation fields remain unconfigured. The pre-existing Facebook URL is retained; it is not verified by either document. Existing educational health content still requires the review described in `LAUNCH_CHECKLIST.md`.
 
 ## Run locally
 
@@ -53,12 +53,14 @@ Do not add runtime machine translation. Keep copy in source-controlled translati
 
 ## SEO and deployment
 
-`index.html` includes localized metadata, Open Graph metadata, canonical and hreflang links. `public/robots.txt` and `public/sitemap.xml` are included. This is a Vite static build, so it can deploy to Netlify, Vercel static hosting, Cloudflare Pages, GitHub Pages, or any static web host.
+The production site uses the Cloudflare Worker `naranijiizaya` at `naranijiizaya.org` and `www.naranijiizaya.org`. The admin panel at `/admin` stores prices, visibility and contact details in D1, protected by Cloudflare Access. See [ADMIN_SETUP.md](ADMIN_SETUP.md) for GitHub automatic deployment and the one-time login setup. Runtime content saves do not require a GitHub push.
+
+`index.html` includes localized metadata, Open Graph metadata, canonical and hreflang links. `public/robots.txt` and `public/sitemap.xml` are included. Vite builds the frontend; the Cloudflare Worker serves the content API and verifies admin access. Static-only hosting does not provide the database API needed for shop prices and editing.
 
 Recommended deployment:
 
 1. Replace placeholders and complete human review.
 2. Run lint, typecheck, build, accessibility review, and device QA.
-3. Deploy the `dist` directory with SPA fallback to `index.html`.
+3. Deploy with `npm run deploy` or the Git-connected Worker build described in `ADMIN_SETUP.md`. Wrangler uploads `dist`, the Worker and the D1 binding together.
 4. Configure the production domain in `SITE_CONFIG.siteUrl`, update canonical/sitemap URLs, and connect the organization’s email/domain DNS.
 5. Re-run the production build after every content or asset change.
