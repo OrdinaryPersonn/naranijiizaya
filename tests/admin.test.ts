@@ -1,8 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { DatabaseSync } from 'node:sqlite'
-import { generateKeyPair, exportJWK, createLocalJWKSet, SignJWT } from 'jose'
-import { authorize, HttpError } from '../worker/auth'
+import { authorize } from '../worker/auth'
 import worker, { createHandler, type Env } from '../worker/index'
 import { DEFAULT_CONTENT, parseContent } from '../src/data/editableContent'
 
@@ -57,11 +56,11 @@ test('saved prices, visibility and contacts persist across reads and reinitializ
   sqlite.close()
 })
 
-test('public content is read-only and every private route fails closed on all hostnames', async () => {
+test('public content is read-only and every private API fails closed on all hostnames', async () => {
   const { env, sqlite } = environment()
   assert.equal((await worker.fetch(get(), env)).status, 200)
   for (const host of [origin, 'https://www.naranijiizaya.org', 'https://naranijiizaya.yanjka409.workers.dev']) {
-    for (const path of ['/admin', '/admin/', '/api/admin/content', '/api/admin/unknown']) {
+    for (const path of ['/api/admin/content', '/api/admin/unknown']) {
       const response = await worker.fetch(new Request(host + path), env)
       assert.equal(response.status, 503)
       assert.equal(response.headers.get('Cache-Control'), 'no-store')
@@ -108,9 +107,9 @@ test('server rejects cross-site writes, invalid payloads and oversized updates w
   sqlite.close()
 })
 
-test('an authenticated admin page is served without caching; missing storage returns an error instead of success', async () => {
+test('admin sign-in page is public without caching; missing storage returns an error instead of success', async () => {
   const { env, sqlite } = environment()
-  const page = await signedIn(get('/admin'), env)
+  const page = await worker.fetch(get('/admin'), env)
   assert.equal(page.status, 200)
   assert.equal(page.headers.get('Cache-Control'), 'no-store')
   assert.equal(page.headers.get('X-Robots-Tag'), 'noindex, nofollow')
@@ -118,23 +117,87 @@ test('an authenticated admin page is served without caching; missing storage ret
   sqlite.close()
 })
 
-test('real JWT verification enforces signature, issuer, audience, expiration and allowed email', async () => {
-  const { publicKey, privateKey } = await generateKeyPair('RS256')
-  const jwk = await exportJWK(publicKey)
-  jwk.kid = 'test-key'
-  const keys = createLocalJWKSet({ keys: [jwk] })
-  const env = { ACCESS_TEAM_DOMAIN: 'https://test-team.cloudflareaccess.com', ACCESS_AUD: 'expected-app', ADMIN_EMAILS: 'editor@example.org' }
-  async function token(overrides: Record<string, unknown> = {}, signingKey = privateKey) {
-    return new SignJWT({ email: 'editor@example.org', iss: env.ACCESS_TEAM_DOMAIN, aud: env.ACCESS_AUD, sub: 'user-id', iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 300, ...overrides })
-      .setProtectedHeader({ alg: 'RS256', kid: 'test-key' }).sign(signingKey)
+const testPassword = 'test-only-long-admin-password-123'
+function login(password: string, headers: Record<string, string> = {}) {
+  return new Request(origin + '/api/admin/login', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', ...headers }, body: JSON.stringify({ password }) })
+}
+const withCookie = (cookie: string, host = origin) => new Request(host + '/api/admin/content', { headers: { Cookie: cookie } })
+
+test('password login issues a secure opaque session, supports writes, and logout revokes replay', async () => {
+  const { env, sqlite } = environment()
+  env.ADMIN_PASSWORD = testPassword
+  const wrong = await worker.fetch(login('incorrect'), env)
+  assert.equal(wrong.status, 401)
+  assert.equal(wrong.headers.has('Set-Cookie'), false)
+  const response = await worker.fetch(login(testPassword), env)
+  assert.equal(response.status, 200)
+  const header = response.headers.get('Set-Cookie')!
+  for (const flag of ['__Host-naran_admin=', 'HttpOnly', 'Secure', 'SameSite=Strict', 'Path=/', 'Max-Age=28800']) assert.ok(header.includes(flag))
+  assert.ok(!header.includes('Domain='))
+  assert.ok(!header.includes(testPassword))
+  assert.deepEqual(await response.json(), { ok: true })
+  const cookie = header.split(';')[0]
+  assert.equal((await worker.fetch(withCookie(cookie), env)).status, 200)
+  const updated = structuredClone(DEFAULT_CONTENT)
+  updated.products[0].price = 123456
+  assert.equal((await worker.fetch(put(updated, 0, { Cookie: cookie }), env)).status, 200)
+  assert.equal(sqlite.prepare('SELECT updated_by FROM site_content').get()?.updated_by, 'admin')
+  const stored = sqlite.prepare('SELECT * FROM admin_sessions').get()!
+  assert.ok(!JSON.stringify(stored).includes(cookie.split('=')[1]))
+  assert.ok(!JSON.stringify(stored).includes(testPassword))
+  const logout = await worker.fetch(new Request(origin + '/api/admin/logout', { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json', Cookie: cookie }, body: '{}' }), env)
+  assert.equal(logout.status, 200)
+  assert.ok(logout.headers.get('Set-Cookie')?.includes('Max-Age=0'))
+  assert.equal((await worker.fetch(withCookie(cookie), env)).status, 401)
+  sqlite.close()
+})
+
+test('sessions reject forgery, alternate hosts, expiration and password rotation', async () => {
+  const { env, sqlite } = environment()
+  env.ADMIN_PASSWORD = testPassword
+  const response = await worker.fetch(login(testPassword), env)
+  const cookie = response.headers.get('Set-Cookie')!.split(';')[0]
+  for (const host of ['https://www.naranijiizaya.org', 'https://naranijiizaya.yanjka409.workers.dev']) {
+    assert.equal((await worker.fetch(withCookie(cookie, host), env)).status, 401)
   }
-  const request = (value: string) => new Request(origin + '/api/admin/content', { headers: { 'Cf-Access-Jwt-Assertion': value } })
-  assert.equal(await authorize(request(await token()), env, keys), 'editor@example.org')
-  await assert.rejects(authorize(get('/admin'), env, keys), (e: HttpError) => e.status === 401)
-  for (const overrides of [{ email: 'other@example.org' }, { aud: 'other-app' }, { iss: 'https://attacker.example' }, { exp: 1 }, { nbf: Math.floor(Date.now() / 1000) + 3600 }]) {
-    await assert.rejects(authorize(request(await token(overrides)), env, keys), (e: HttpError) => e.status === 403)
+  assert.equal((await worker.fetch(withCookie('__Host-naran_admin=' + 'a'.repeat(43)), env)).status, 401)
+  assert.equal((await worker.fetch(new Request(origin + '/api/admin/content', { headers: { 'Cf-Access-Jwt-Assertion': 'old-access-header' } }), env)).status, 401)
+  env.ADMIN_PASSWORD = 'a-different-long-admin-password'
+  assert.equal((await worker.fetch(withCookie(cookie), env)).status, 401)
+  env.ADMIN_PASSWORD = testPassword
+  sqlite.prepare('UPDATE admin_sessions SET expires_at = 1').run()
+  assert.equal((await worker.fetch(withCookie(cookie), env)).status, 401)
+  await assert.rejects(authorize(get(), env))
+  sqlite.close()
+})
+
+test('sign-in is rate limited across handler instances and all hostnames', async () => {
+  const { env, sqlite, binding } = environment()
+  env.ADMIN_PASSWORD = testPassword
+  for (let attempt = 0; attempt < 10; attempt++) {
+    assert.equal((await worker.fetch(login('wrong'), env)).status, 401)
   }
-  const wrong = await generateKeyPair('RS256')
-  await assert.rejects(authorize(request(await token({}, wrong.privateKey)), env, keys), (e: HttpError) => e.status === 403)
-  await assert.rejects(authorize(request(await token()), { ...env, ACCESS_AUD: '' }, keys), (e: HttpError) => e.status === 503)
+  env.CONTENT_DB = binding()
+  const blocked = await createHandler()(login(testPassword), env)
+  assert.equal(blocked.status, 429)
+  assert.equal(blocked.headers.get('Retry-After'), '900')
+  const otherHost = new Request('https://www.naranijiizaya.org/api/admin/login', { method: 'POST', headers: { Origin: 'https://www.naranijiizaya.org', 'Content-Type': 'application/json' }, body: JSON.stringify({ password: testPassword }) })
+  assert.equal((await worker.fetch(otherHost, env)).status, 429)
+  sqlite.prepare('UPDATE admin_login_attempts SET reset_at = 1').run()
+  assert.equal((await worker.fetch(login(testPassword), env)).status, 200)
+  sqlite.close()
+})
+
+test('sign-in requires a configured strong secret, same-origin JSON and POST', async () => {
+  const { env, sqlite } = environment()
+  assert.equal((await worker.fetch(login(testPassword), env)).status, 503)
+  env.ADMIN_PASSWORD = 'short'
+  assert.equal((await worker.fetch(login('short'), env)).status, 503)
+  env.ADMIN_PASSWORD = testPassword
+  assert.equal((await worker.fetch(login(testPassword, { Origin: 'https://attacker.example' }), env)).status, 403)
+  assert.equal((await worker.fetch(login(testPassword, { 'Content-Type': 'text/plain' }), env)).status, 415)
+  assert.equal((await worker.fetch(get('/api/admin/login'), env)).status, 405)
+  assert.equal((await worker.fetch(get('/api/admin/logout'), env)).status, 405)
+  assert.equal((await worker.fetch(login(testPassword, { 'Sec-Fetch-Site': 'cross-site' }), env)).status, 403)
+  sqlite.close()
 })

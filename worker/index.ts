@@ -1,33 +1,15 @@
-import { DEFAULT_CONTENT, parseContent, type ContentSnapshot } from '../src/data/editableContent'
-import { authorize, HttpError, type AccessEnv } from './auth'
+import { parseContent, type ContentSnapshot } from '../src/data/editableContent'
+import { authorize, signIn, signOut, HttpError, type AuthEnv } from './auth'
+import { database } from './storage'
 
-export type Env = AccessEnv & { CONTENT_DB?: D1Database; ASSETS: Fetcher }
+export type Env = AuthEnv & { ASSETS: Fetcher }
 type Row = { content: string; revision: number; updated_at: string | null }
-const initialized = new WeakMap<D1Database, Promise<void>>()
-async function database(env: Env): Promise<D1Database> {
-  if (!env.CONTENT_DB) throw new HttpError(503, 'Website content storage is not configured yet.')
-  const db = env.CONTENT_DB
-  let ready = initialized.get(db)
-  if (!ready) {
-    ready = (async () => {
-      // Additive, idempotent initialization. Deployments never replace saved content.
-      await db.prepare(`CREATE TABLE IF NOT EXISTS site_content (
-        id INTEGER PRIMARY KEY CHECK (id = 1), content TEXT NOT NULL,
-        revision INTEGER NOT NULL DEFAULT 0, updated_at TEXT, updated_by TEXT
-      )`).run()
-      await db.prepare('INSERT OR IGNORE INTO site_content (id, content, revision) VALUES (1, ?, 0)').bind(JSON.stringify(DEFAULT_CONTENT)).run()
-    })()
-    initialized.set(db, ready)
-  }
-  try { await ready } catch (error) { initialized.delete(db); throw error }
-  return db
-}
 function snapshot(row: Row): ContentSnapshot {
   return { content: parseContent(JSON.parse(row.content)), revision: row.revision, updatedAt: row.updated_at }
 }
 function json(value: unknown, status = 200): Response {
   return Response.json(value, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff',
-    'X-Robots-Tag': 'noindex', 'Vary': 'Cookie, Cf-Access-Jwt-Assertion' } })
+    'X-Robots-Tag': 'noindex', 'Vary': 'Cookie' } })
 }
 async function readJson(request: Request): Promise<unknown> {
   if (request.headers.get('Content-Type')?.split(';')[0].trim() !== 'application/json') throw new HttpError(415, 'Send JSON content.')
@@ -55,8 +37,19 @@ export function createHandler(authenticate = authorize) {
     const adminApi = url.pathname === '/api/admin' || url.pathname.startsWith('/api/admin/')
     try {
       let email = ''
-      // Authorization applies to every private path on every hostname, including workers.dev.
-      if (adminPage || adminApi) email = await authenticate(request, env)
+      if (url.pathname === '/api/admin/login' || url.pathname === '/api/admin/logout') {
+        if (request.method !== 'POST') throw new HttpError(405, 'Method not allowed.')
+        if (request.headers.get('Origin') !== url.origin || request.headers.get('Sec-Fetch-Site') === 'cross-site') throw new HttpError(403, 'Sign in or out from this website’s admin page.')
+        const body = await readJson(request)
+        const setCookie = url.pathname.endsWith('/login')
+          ? await signIn(request, env, body && typeof body === 'object' && 'password' in body ? body.password : undefined)
+          : await signOut(request, env)
+        const response = json({ ok: true })
+        response.headers.set('Set-Cookie', setCookie)
+        return response
+      }
+      // The page is a public sign-in shell; every private API request requires a session.
+      if (adminApi) email = await authenticate(request, env)
       if (adminPage) {
         if (!['GET', 'HEAD'].includes(request.method)) throw new HttpError(405, 'Method not allowed.')
         const page = await env.ASSETS.fetch(new Request(new URL('/', url), { method: request.method }))
@@ -89,7 +82,11 @@ export function createHandler(authenticate = authorize) {
       if (url.pathname === '/api' || url.pathname.startsWith('/api/')) throw new HttpError(404, 'Not found.')
       return env.ASSETS.fetch(request)
     } catch (error) {
-      if (error instanceof HttpError) return json({ error: error.message }, error.status)
+      if (error instanceof HttpError) {
+        const response = json({ error: error.message }, error.status)
+        if (error.status === 429) response.headers.set('Retry-After', '900')
+        return response
+      }
       console.error('Content service failed', error instanceof Error ? error.message : 'Unknown error')
       return json({ error: 'Content is temporarily unavailable. Please try again.' }, 503)
     }

@@ -53,7 +53,7 @@ Do not add runtime machine translation. Keep copy in source-controlled translati
 
 ## SEO and deployment
 
-The production site uses the Cloudflare Worker `naranijiizaya` at `naranijiizaya.org` and `www.naranijiizaya.org`. The admin panel at `/admin` stores prices, visibility and contact details in D1, protected by Cloudflare Access. See [ADMIN_SETUP.md](ADMIN_SETUP.md) for GitHub automatic deployment and the one-time login setup. Runtime content saves do not require a GitHub push.
+The production site uses the Cloudflare Worker `naranijiizaya` at `naranijiizaya.org` and `www.naranijiizaya.org`. The admin panel at `/admin` stores prices, visibility and contact details in D1, protected by a server-verified admin password. See [ADMIN_SETUP.md](ADMIN_SETUP.md) for GitHub automatic deployment and the one-time password setup. Runtime content saves do not require a GitHub push.
 
 `index.html` includes localized metadata, Open Graph metadata, canonical and hreflang links. `public/robots.txt` and `public/sitemap.xml` are included. Vite builds the frontend; the Cloudflare Worker serves the content API and verifies admin access. Static-only hosting does not provide the database API needed for shop prices and editing.
 

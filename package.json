@@ -19,7 +19,6 @@
     "eslint": "latest",
     "eslint-plugin-react-hooks": "latest",
     "eslint-plugin-react-refresh": "latest",
-    "jose": "^6.2.18",
     "react": "latest",
     "react-dom": "latest",
     "typescript": "latest",

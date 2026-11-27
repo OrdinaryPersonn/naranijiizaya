@@ -1,87 +1,66 @@
-# Admin panel and Cloudflare deployment
+# Admin panel setup
 
-The editor at `https://naranijiizaya.org/admin` manages prices, product-group visibility, phone, email, address, social links and the order link. It supports Mongolian and English. Prices apply to all numbered variants within a product group. Photo uploads, product creation and page-copy editing are not included in this first version.
+The editor at `https://naranijiizaya.org/admin` manages product-group prices and visibility, contact details, social links and the order link. It supports Mongolian and English. Changes are stored in Cloudflare D1 and survive future website deployments.
 
-Changes are saved to Cloudflare D1. New visitors see saved changes on their next page load; an already-open page refreshes content on focus and every minute. Website deployments preserve saved content. Invalid prices and unsafe URLs are rejected, and concurrent editors cannot silently overwrite each other's changes.
+## Set your admin password
 
-## 1. Connect GitHub to the existing Worker
+Zero Trust and Cloudflare Access are **not required**.
 
-In Cloudflare, open **Workers & Pages → naranijiizaya → Settings → Build** and connect **OrdinaryPersonn/naranijiizaya**. Choose:
+1. Open **Cloudflare → Workers & Pages → naranijiizaya → Settings → Variables and Secrets**.
+2. Select **Add**, choose the **Secret** type, and enter the name `ADMIN_PASSWORD`.
+3. Enter a unique password or passphrase of **at least 16 characters**. A password manager can generate and store it. Enter it directly in Cloudflare; do not put it in GitHub or chat.
+4. Save/deploy the setting.
+5. Open `https://naranijiizaya.org/admin` and sign in with that password.
 
-| Setting | Value |
-| --- | --- |
-| Production branch | `main` |
-| Root directory | Repository root |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
+There is one shared administrator password in this version. Anyone who knows it can edit the supported website settings. Individual editor accounts are not included. To change or recover the password, replace the `ADMIN_PASSWORD` secret in Cloudflare and deploy the setting. Existing sessions stop working after the password changes.
 
-Cloudflare must install dependencies from `package-lock.json` (or use `npm ci` if an install command is requested). Enable automatic builds for pushes to `main`. Existing Vercel integrations do not deploy this Cloudflare Worker or its database.
+If you previously configured an Access application for this site's admin paths, remove those paths from that application so it does not intercept the password sign-in screen. Unused `ACCESS_TEAM_DOMAIN`, `ACCESS_AUD`, and `ADMIN_EMAILS` settings can be removed; the app no longer reads them.
 
-The checked-in Wrangler configuration keeps the existing Worker name and both custom domains. Wrangler 4.168.0 or later automatically provisions the `CONTENT_DB` D1 binding, reusing the linked database on subsequent deploys. The Worker initializes its table and starting content once with `CREATE TABLE IF NOT EXISTS` and `INSERT OR IGNORE`; no manual SQL migration is needed for this initial schema. The deployment account needs permission to create/bind D1 databases and deploy the Worker.
+## Using the editor
 
-For a manual first deployment from this folder:
+- Prices apply to all numbered variants in the group.
+- **Show in shop** hides or restores a group.
+- Empty contact fields are hidden on the public website. Links must start with `https://`.
+- Click **Хадгалах / Save changes** to publish an edit. New page loads show the saved content; open pages refresh on focus and every minute.
+- If another editor saved first, reload the latest version before making further changes.
+- Click **Sign out** when finished. Sessions also expire after eight hours.
 
-```bash
-npm ci
-npx wrangler login
-npm run deploy
-```
+Photo uploads, adding new products, payment QR editing, and general page-copy editing are not included in this first version.
 
-After deployment, `/api/content` should return JSON. Until authentication is configured below, `/admin` and its write API return an error and cannot edit content. The public website remains accessible.
+## Automatic deployment
 
-## 2. Choose who can edit
+The existing Cloudflare Worker is connected to **OrdinaryPersonn/naranijiizaya**, production branch **main**. Its build command is `npm run build` and deploy command is `npx wrangler deploy`. Pushes trigger a new Cloudflare build; content changes saved through the admin panel do not require a push.
 
-Use an email inbox you control. In **Cloudflare Zero Trust → Access → Applications**, add a **Self-hosted** application called **Naran Ijii Zaya Admin**. Add these four public hostname/path entries to the **same application**:
+Wrangler provisions/reuses the `CONTENT_DB` D1 binding. The Worker initializes its tables with `CREATE TABLE IF NOT EXISTS` and seeds initial content with `INSERT OR IGNORE`. It never resets saved prices on deployment. Preserve this binding/database when changing the website. Export a D1 backup before structural database changes.
 
-| Hostname | Path |
-| --- | --- |
-| `naranijiizaya.org` | `/admin*` |
-| `naranijiizaya.org` | `/api/admin*` |
-| `www.naranijiizaya.org` | `/admin*` |
-| `www.naranijiizaya.org` | `/api/admin*` |
+If a build says a hostname has externally managed DNS records, remove only the conflicting A/AAAA/CNAME for that exact hostname and attach it through **Worker → Settings → Domains & Routes → Custom Domain**, then retry the build. Keep email records and other hostnames unchanged.
 
-Add an **Allow** policy restricted to the exact email addresses of the editors. Enable **One-time PIN** as a login method if you want Cloudflare to email a sign-in code. Protect only these paths; protecting the entire Worker would require visitors to log in to the public site.
+## Authentication behavior
 
-Copy the application's **Application Audience (AUD) Tag** from its settings, and note your Zero Trust team domain, which looks like `https://your-team.cloudflareaccess.com`.
+- The password exists only as a Cloudflare Worker secret. It is never stored in the frontend, repository, browser storage or database.
+- Successful sign-in sets a random, host-only, `Secure`, `HttpOnly`, `SameSite=Strict` cookie. D1 stores a hash of the session token, its expiration and a password-bound verification tag.
+- Every private API request checks its session, expiration, hostname and current password. The public `/admin` page is only the sign-in shell; opening it does not grant permission to read or change settings.
+- Logout deletes the server-side session, preventing replay of that cookie.
+- Sign-in is limited to ten attempts per client IP per fifteen minutes, shared across hostnames and Worker instances. Mutation endpoints require same-origin JSON requests.
+- The admin page and API responses use `Cache-Control: no-store`.
 
-## 3. Set the Worker's sign-in configuration
-
-In **Workers & Pages → naranijiizaya → Settings → Variables and Secrets**, add:
-
-| Name | Value |
-| --- | --- |
-| `ACCESS_TEAM_DOMAIN` | Your full `https://your-team.cloudflareaccess.com` URL |
-| `ACCESS_AUD` | The Access application's AUD tag |
-| `ADMIN_EMAILS` | The approved editor email addresses, separated by commas |
-
-These are runtime settings. Keep the email allowlist in Cloudflare, not in GitHub. Save/deploy the settings. `keep_vars: true` preserves dashboard variables on later Wrangler deployments; secrets are also retained.
-
-The Worker verifies the Access JWT signature, issuer, audience, expiration and editor email on **every admin request**. Requests through `workers.dev` or other hostnames cannot bypass this check. Admin responses and content API responses are not cached. Saves require a same-origin JSON request.
-
-## 4. Verify and use
-
-1. Open the public website in a signed-out browser: it must remain public.
-2. Open `https://naranijiizaya.org/admin`, enter your approved email and sign-in code.
-3. Edit a price or contact field and click **Хадгалах / Save changes**. A success message appears only after the database confirms the update.
-4. Refresh the public shop to verify the change. Use **Show in shop** to hide or restore a product group.
-5. If another editor saved first, use **Reload latest** before making further edits. Reloading discards unsaved edits only after confirmation.
-
-Use the same database binding for future deployments. Do not delete/recreate the D1 database to update the website. Before structural schema changes, export a backup or use D1 recovery tools.
-
-## Local development and checks
+## Local checks
 
 ```bash
 npm ci
 npm test
 npm run build
+npx wrangler deploy --dry-run
 npm run dev:worker
 ```
 
-Wrangler serves the built frontend and API at `http://localhost:8787`, backed by local D1 storage. For frontend hot reload, also run `npm run dev`; its `/api` proxy targets the local Worker. Local sign-in stays locked unless valid Access configuration and a verified identity are supplied. There is no production password or development bypass in the app. Tests use signed test JWTs and an in-memory SQLite database.
+Wrangler runs the built frontend and local D1 at `http://localhost:8787`. To test sign-in locally, set a separate testing-only `ADMIN_PASSWORD` in an ignored `.dev.vars` file. Never reuse the production password in test fixtures. For frontend hot reload, also run `npm run dev`; the API proxy targets port 8787. A local login uses the same server authentication checks as production.
 
-## References
+Manual production deployment, if needed:
 
-- [Workers Git integration and builds](https://developers.cloudflare.com/workers/ci-cd/)
-- [Automatic resource provisioning](https://developers.cloudflare.com/changelog/post/2025-10-24-automatic-resource-provisioning/)
-- [Access hostname and path protection](https://developers.cloudflare.com/workers/configuration/cloudflare-access/)
-- [Validating Access JWTs](https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/validating-json/)
+```bash
+npx wrangler login
+npm run deploy
+```
+
+[Cloudflare Worker secrets documentation](https://developers.cloudflare.com/workers/configuration/secrets/)

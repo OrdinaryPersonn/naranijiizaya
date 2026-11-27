@@ -3,6 +3,7 @@ import { parseContent, parseSnapshot, type ContentSnapshot, type EditableContent
 import { PRODUCT_GROUPS } from '../data/merch'
 import { SHOP_COPY } from '../data/shopCopy'
 import './admin.css'
+import { AdminLogin } from './AdminLogin'
 
 const copy = {
   en: {
@@ -43,6 +44,8 @@ export default function Admin() {
   const [loading, setLoading] = useState(true)
   const [needsLogin, setNeedsLogin] = useState(false)
   const [conflict, setConflict] = useState(false)
+  const [loadVersion, setLoadVersion] = useState(0)
+  const [signingOut, setSigningOut] = useState(false)
   const t = copy[locale]
   const dirty = !!draft && JSON.stringify(draft) !== JSON.stringify(snapshot?.content)
 
@@ -57,15 +60,16 @@ export default function Admin() {
     fetch('/api/admin/content', { cache: 'no-store', credentials: 'same-origin', signal: controller.signal })
       .then(async response => {
         if (!response.ok || !response.headers.get('Content-Type')?.includes('application/json')) {
+          if (active && (response.status === 401 || response.status === 503)) setNeedsLogin(true)
           const body = await response.json().catch(() => null)
           throw new Error(body?.error || 'Please reload to sign in again.')
         }
         const data = parseSnapshot(await response.json())
-        if (active) { setSnapshot(data); setDraft(structuredClone(data.content)) }
+        if (active) { setSnapshot(data); setDraft(structuredClone(data.content)); setNeedsLogin(false); setError('') }
       }).catch(e => { if (active) setError(e instanceof Error ? e.message : 'Unable to load settings.') })
       .finally(() => { clearTimeout(timer); if (active) setLoading(false) })
     return () => { active = false; clearTimeout(timer); controller.abort() }
-  }, [])
+  }, [loadVersion])
   useEffect(() => {
     const warn = (event: BeforeUnloadEvent) => { if (dirty) { event.preventDefault(); event.returnValue = '' } }
     window.addEventListener('beforeunload', warn)
@@ -74,9 +78,26 @@ export default function Admin() {
 
   const update = (next: EditableContent) => { setDraft(next); setSaved(false); if (!conflict) setError('') }
   const reload = () => { if (!dirty || window.confirm(t.reloadConfirm)) window.location.reload() }
+  function signedIn() {
+    setNeedsLogin(false); setError('')
+    if (!draft) { setLoading(true); setLoadVersion(value => value + 1) }
+  }
+  async function logout() {
+    if (dirty && !window.confirm(t.reloadConfirm)) return
+    setSigningOut(true)
+    try {
+      const response = await fetch('/api/admin/logout', {
+        method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: '{}',
+        signal: AbortSignal.timeout(10000),
+      })
+      if (!response.ok) throw new Error('Could not sign out. Please try again.')
+      setDraft(null); setSnapshot(null); setNeedsLogin(true); setSaved(false); setError(''); setConflict(false)
+    } catch (error) { setError((error as Error).message) }
+    finally { setSigningOut(false) }
+  }
   async function save(event: FormEvent) {
     event.preventDefault()
-    if (!draft || !snapshot || saving || conflict) return
+    if (!draft || !snapshot || saving || conflict || needsLogin || signingOut) return
     let content: EditableContent
     try { content = parseContent(draft) } catch (e) { setError((e as Error).message); return }
     setSaving(true); setError(''); setSaved(false)
@@ -99,14 +120,15 @@ export default function Admin() {
 
   return <div className="admin-app">
     <header className="admin-header"><a className="admin-brand" href="/">Наран Ижий Заяа <span>ADMIN</span></a>
-      <nav aria-label="Admin navigation"><a href="/" target="_blank" rel="noreferrer">{t.website}</a><a href="/cdn-cgi/access/logout">{t.signout}</a>
+      <nav aria-label="Admin navigation"><a href="/" target="_blank" rel="noreferrer">{t.website}</a><button type="button" className="admin-signout" disabled={!draft || saving || signingOut} onClick={logout}>{t.signout}</button>
         <select aria-label="Language" value={locale} onChange={e => setLocale(e.target.value as 'mn' | 'en')}><option value="mn">Монгол</option><option value="en">English</option></select>
       </nav></header>
     <main className="admin-main" id="main-content"><div className="admin-intro"><p className="admin-eyebrow">НҮТББ · WEBSITE SETTINGS</p><h1>{t.title}</h1><p>{t.intro}</p></div>
       {loading && <p role="status">{t.loading}</p>}
-      {!loading && !draft && <div className="admin-notice" role="alert"><p>{error || t.loadError}</p><button type="button" onClick={reload}>{t.retry}</button></div>}
+      {!loading && !draft && !needsLogin && <div className="admin-notice" role="alert"><p>{error || t.loadError}</p><button type="button" onClick={reload}>{t.retry}</button></div>}
+      {!loading && needsLogin && <AdminLogin locale={locale} onSignedIn={signedIn}/>}
       {draft && <form onSubmit={save}>
-        <fieldset disabled={saving} className="admin-fields"><legend className="admin-sr-only">{t.title}</legend>
+        <fieldset disabled={saving || needsLogin || signingOut} className="admin-fields"><legend className="admin-sr-only">{t.title}</legend>
           <section className="admin-section"><h2>{t.products}</h2><p className="admin-help">{t.productsHelp}</p><div className="admin-products">
             {PRODUCT_GROUPS.map(group => {
               const product = draft.products.find(item => item.id === group.id)!
@@ -125,7 +147,7 @@ export default function Admin() {
             </label>)}
           </div></section>
         </fieldset>
-        <div className="admin-savebar"><div aria-live="polite"><p className={saved ? 'admin-success' : ''}>{saved ? t.saved : dirty ? t.unsaved : t.unchanged}</p>{snapshot?.updatedAt && <small>{t.lastSaved}: {new Date(snapshot.updatedAt).toLocaleString(locale === 'mn' ? 'mn-MN' : 'en-US')}</small>}</div><button type="submit" disabled={!dirty || saving || conflict || needsLogin}>{saving ? t.saving : t.save}</button></div>
+        <div className="admin-savebar"><div aria-live="polite"><p className={saved ? 'admin-success' : ''}>{saved ? t.saved : dirty ? t.unsaved : t.unchanged}</p>{snapshot?.updatedAt && <small>{t.lastSaved}: {new Date(snapshot.updatedAt).toLocaleString(locale === 'mn' ? 'mn-MN' : 'en-US')}</small>}</div><button type="submit" disabled={!dirty || saving || conflict || needsLogin || signingOut}>{saving ? t.saving : t.save}</button></div>
         {error && <div className="admin-notice" role="alert"><p>{error}</p>{(conflict || needsLogin) && <button type="button" onClick={reload}>{t.retry}</button>}</div>}
       </form>}
     </main>
